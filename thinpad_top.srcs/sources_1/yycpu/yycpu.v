@@ -280,7 +280,7 @@ module yycpu(
 		.mem_oe_n(ram_oe_n)	
 	);
 	
-	dcache u_dcache(
+	dcache_new u_dcache(
 		.clk(clk),
 		.rst(rst),
 		.ram_data_o(ram_data_cache_o),        //?????????
