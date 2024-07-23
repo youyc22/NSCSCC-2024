@@ -12,7 +12,7 @@ module uart_controller (
     input wire rxd
 );
 
-    parameter clk_freq = 110*1000000;
+    parameter clk_freq = 108*1000000;
     parameter baud = 9600;
     
     wire [7:0] RxD_data;
