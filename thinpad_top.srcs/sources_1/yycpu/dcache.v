@@ -11,7 +11,7 @@ module dcache(
     input    wire[31:0]  mem_data_i,        // 要写入的数据
     input    wire        mem_we_n_i,        // 写使能，低有效
     input    wire        mem_oe_n_i,        // 读使能，低有效
-    input    wire[3:0]   mem_be_n_i,       // 字节选择信号
+    input    wire[3:0]   mem_be_n_i,        // 字节选择信号
     input    wire        mem_ce_n_i,        // 片选信号
     output   reg[31:0]   ram_data_o,        // 读取的数据输出
     output   reg         stall              // 流水线暂停信号
@@ -52,10 +52,6 @@ module dcache(
     wire [Cache_Index-1:0]  ram_cache_i = mem_addr_i[6:2]; // 从地址中提取缓存索引
 
     wire hit = 1'b0; // 缓存命中信号（这里似乎未实现）
-
-    // // 写缓冲区（未使用）
-    // reg[31:0]cache_wb;
-    // reg cache_wb_vaild;
     
     reg finish_read;  // 读完成标志
     reg finish_write; // 写完成标志
