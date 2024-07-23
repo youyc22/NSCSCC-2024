@@ -1,16 +1,16 @@
 `include "defines.v"
 
 module yycpu(
-	input wire						clk,		//ʱ������
-	input wire						rst,		//��λ�ź�
+	input wire						clk,		//???????
+	input wire						rst,		//??��???
 
-	input wire[31:0]            	rom_data_i,	//ָ������
-	output wire[31:0]          		rom_addr_o,	//ָ����?
+	input wire[31:0]            	rom_data_i,	//???????
+	output wire[31:0]          		rom_addr_o,	//??????
 	output wire                    	rom_ce_n,
 	
 	input wire                     	stall_from_bus,
 	
-	//���ݼĴ���
+	//????????
 	input wire[31:0]            	ram_data_i,
 	output wire[31:0]          		ram_addr_o,
 	output wire[31:0]           	ram_data_o,
@@ -23,7 +23,7 @@ module yycpu(
 	wire[31:0] id_pc_i;
 	wire[31:0] id_inst_i;
 	
-	//��������׶�IDģ��������ID/EXģ�������??
+	//??????????ID?????????ID/EX??????????
 	wire[4:0] id_aluop_o;
 	wire[2:0] id_alusel_o;
 	wire[31:0] id_reg1_o;
@@ -31,58 +31,58 @@ module yycpu(
 	wire id_wreg_o;
 	wire[4:0] id_wd_o;
 	
-	//�ô�
+	//???
 	wire[31:0] id_inst_o;
-	//�ӳٲ�
+	//????
 	wire id_is_in_delayslot_o;
   	wire[31:0] id_link_address_o;
 	
-	//����ID/EXģ��������ִ�н׶�EXģ�������??
+	//????ID/EX???????????��??EX??????????
 	wire[4:0] ex_aluop_i;
 	wire[2:0] ex_alusel_i;
 	wire[31:0] ex_reg1_i;
 	wire[31:0] ex_reg2_i;
 	wire ex_wreg_i;
 	wire[4:0] ex_wd_i;
-	//�ӳٲ�
+	//????
 	wire ex_is_in_delayslot_i;	
     wire[31:0] ex_link_address_i;
-	//�ô�
+	//???
 	wire[31:0] ex_inst_i;
 	
-	//����ִ�н׶�EXģ��������EX/MEMģ�������??
+	//??????��??EX?????????EX/MEM??????????
 	wire ex_wreg_o;
 	wire[4:0] ex_wd_o;
 	wire[31:0] ex_wdata_o;
 
-	//�ô�
+	//???
 	wire[4:0] ex_aluop_o;
 	wire[31:0] ex_mem_addr_o;
 	wire[31:0] ex_reg1_o;
 	wire[31:0] ex_reg2_o;
 
-	//����EX/MEMģ��������ô�׶�MEMģ�������??
+	//????EX/MEM?????????????MEM??????????
 	wire mem_wreg_i;
 	wire[4:0] mem_wd_i;
 	wire[31:0] mem_wdata_i;
 
-	//�ô�
+	//???
 	wire[4:0] mem_aluop_i;
 	wire[31:0] mem_mem_addr_i;
 	wire[31:0] mem_reg1_i;
 	wire[31:0] mem_reg2_i;	
 
-	//���ӷô�׶�MEMģ��������MEM/WBģ�������??
+	//????????MEM?????????MEM/WB??????????
 	wire mem_wreg_o;
 	wire[4:0] mem_wd_o;
 	wire[31:0] mem_wdata_o;
 	
-	//����MEM/WBģ���������д�׶ε�����??	
+	//????MEM/WB??????????��??��???????	
 	wire wb_wreg_i;
 	wire[4:0] wb_wd_i;
 	wire[31:0] wb_wdata_i;
 	
-	//��������׶�IDģ����ͨ�üĴ���Regfileģ��
+	//??????????ID???????��????Regfile???
 	wire reg1_read;
 	wire reg2_read;
 	wire[31:0] reg1_data;
@@ -90,12 +90,12 @@ module yycpu(
 	wire[4:0] reg1_addr;
 	wire[4:0] reg2_addr;
 	
-	//��ͣ
+	//???
 	wire[5:0] stall;
 	wire stall_from_id;	
 	wire stall_from_ex;
   
-  	//�ӳٲ�
+  	//????
   	wire is_in_delayslot_i;
 	wire is_in_delayslot_o;
 	wire next_inst_in_delayslot_o;
@@ -120,12 +120,12 @@ module yycpu(
 	icache_direct u_icache(
 		.clk(clk),
 		.rst(rst),
-		.rom_addr_i(rom_addr_o),        //��ȡָ��ĵ��?
-		.rom_ce_n_i(rom_ce_n),          //ָ���??��ʹ���ź�??
-		.inst_o(rom_data_icache),            //��ȡ����ָ��
+		.rom_addr_i(rom_addr_o),        //??????????
+		.rom_ce_n_i(rom_ce_n),          //????????????????
+		.inst_o(rom_data_icache),            //??????????
 		.stall(stall_from_icache),
 		.stall_from_bus(stall_from_bus),
-		.inst_i(rom_data_i)          //��ȡ����ָ��
+		.inst_i(rom_data_i)          //??????????
 	);
 
 	if_id_reg u_if_id_reg(
@@ -145,37 +145,37 @@ module yycpu(
         .ex_aluop_i(ex_aluop_o),
 		.reg1_data_i(reg1_data),
 		.reg2_data_i(reg2_data),
-        //exð��
+        //ex???
 	   	.ex_wreg_i(ex_wreg_o),
 		.ex_wdata_i(ex_wdata_o),
 		.ex_wd_i(ex_wd_o),
-		//memð��
+		//mem???
 		.mem_wreg_i(mem_wreg_o),
 		.mem_wdata_i(mem_wdata_o),
 		.mem_wd_i(mem_wd_o),
-		//�ӳٲ�
+		//????
 		.is_in_delayslot_i(is_in_delayslot_i),
-		//�͵�regfile����Ϣ
+		//???regfile?????
 		.reg1_read_o(reg1_read),
 		.reg2_read_o(reg2_read), 	  
 		.reg1_addr_o(reg1_addr),
 		.reg2_addr_o(reg2_addr), 
-		//�͵�ID/EXģ������?
+		//???ID/EX????????
 		.aluop_o(id_aluop_o),
 		.alusel_o(id_alusel_o),
 		.reg1_o(id_reg1_o),
 		.reg2_o(id_reg2_o),
 		.waddr_o(id_wd_o),
 		.wreg_o(id_wreg_o),
-		//ָ��
+		//???
 		.inst_o(id_inst_o),
-		//�ӳٲ�
+		//????
 		.next_inst_in_delayslot_o(next_inst_in_delayslot_o),	
 		.branch_flag_o(id_branch_flag_o),
 		.branch_target_o(branch_target_address),       
 		.link_addr_o(id_link_address_o),
 		.is_in_delayslot_o(id_is_in_delayslot_o),
-		//��ͣ
+		//???
 		.stall(stall_from_id)	
 	);
 
@@ -259,7 +259,7 @@ module yycpu(
 		.mem_reg2(mem_reg2_i)						       	
 	);
 	
-  	//MEMģ������
+  	//MEM???????
 	mem_state u_mem_state(
 		.rst(rst),
 		.wd_i(mem_wd_i),
@@ -283,18 +283,18 @@ module yycpu(
 	dcache u_dcache(
 		.clk(clk),
 		.rst(rst),
-		.ram_data_o(ram_data_cache_o),        //��ȡ������
-		.mem_addr_i(ram_addr_o),        	  //����д����ַ
-		.mem_data_i(ram_data_o),              //д�������??
-		.mem_we_n_i(ram_we_n),          	  //дʹ�ܣ�����Ч
-		.mem_be_n_i(ram_be_n),         	  //�ֽ�ѡ���źţ�����Ч
-		.mem_oe_n_i(ram_oe_n),          	  //��ʹ�ܣ�����Ч
-		.mem_ce_n_i(ram_ce_n),          	  //Ƭѡ�ź�
+		.ram_data_o(ram_data_cache_o),        //?????????
+		.mem_addr_i(ram_addr_o),        	  //????��?????
+		.mem_data_i(ram_data_o),              //��?????????
+		.mem_we_n_i(ram_we_n),          	  //��????????��
+		.mem_be_n_i(ram_be_n),         	  //??????????????��
+		.mem_oe_n_i(ram_oe_n),          	  //??????????��
+		.mem_ce_n_i(ram_ce_n),          	  //?????
 		.stall(stall_from_dcache),
-		.ram_data_i(ram_data_i)               //д�������??
+		.ram_data_i(ram_data_i)               //��?????????
 	);
 
-	//MEM/WBģ��
+	//MEM/WB???
 	mem_wb_reg u_mem_wb_reg(
 		.clk(clk),
 		.rst(rst),
