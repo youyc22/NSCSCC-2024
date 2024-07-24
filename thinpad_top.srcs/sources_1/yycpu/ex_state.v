@@ -72,14 +72,14 @@ module ex_state(
 			(aluop_i ==  `SLT_OP) ? (($signed(reg1_i) < $signed(reg2_i)) ? 32'b1 : 32'b0) : `ZeroWord;
 	end
 
-    // // �˷�����
-    // assign opdata1_mult = ((aluop_i ==  `MUL_OP) && (reg1_i[31] == 1'b1)) ? (~reg1_i + 1) : reg1_i;
-    // assign opdata2_mult = ((aluop_i ==  `MUL_OP) && (reg2_i[31] == 1'b1)) ? (~reg2_i + 1) : reg2_i;
-    // //assign hilo_temp = opdata1_mult*opdata2_mult  ;
-    // always @(*) begin
-    //     mulres = (rst == `RstEnable) ? 64'd0 :
-    //         (aluop_i ==  `MUL_OP) ? ((reg1_i[31] ^ reg2_i[31]) ? (~hilo_temp + 1) : hilo_temp) : hilo_temp;
-    // end
+    // �˷�����
+    assign opdata1_mult = ((aluop_i ==  `MUL_OP) && (reg1_i[31] == 1'b1)) ? (~reg1_i + 1) : reg1_i;
+    assign opdata2_mult = ((aluop_i ==  `MUL_OP) && (reg2_i[31] == 1'b1)) ? (~reg2_i + 1) : reg2_i;
+    assign hilo_temp = opdata1_mult*opdata2_mult  ;
+    always @(*) begin
+        mulres = (rst == `RstEnable) ? 64'd0 :
+            (aluop_i ==  `MUL_OP) ? ((reg1_i[31] ^ reg2_i[31]) ? (~hilo_temp + 1) : hilo_temp) : hilo_temp;
+    end
 
 	// //����ʿ��ʵ�ֳ˷���
     // wallace wallace_0(
@@ -88,19 +88,19 @@ module ex_state(
     //     .result(hilo_temp)
     // );
 
-    assign opdata1_mult = (aluop_i == `MUL_OP) ? reg1_i : 32'b0;
-    assign opdata2_mult = (aluop_i == `MUL_OP) ? reg2_i : 32'b0;
+    // assign opdata1_mult = (aluop_i == `MUL_OP) ? reg1_i : 32'b0;
+    // assign opdata2_mult = (aluop_i == `MUL_OP) ? reg2_i : 32'b0;
 
-    always @(*) begin
-        mulres = (rst == `RstEnable) ? 64'd0 :
-            (aluop_i == `MUL_OP) ? hilo_temp : 64'd0;
-    end
+    // always @(*) begin
+    //     mulres = (rst == `RstEnable) ? 64'd0 :
+    //         (aluop_i == `MUL_OP) ? hilo_temp : 64'd0;
+    // end
 
-    mult_gen_0 mult_gen_0(
-        .A(opdata1_mult),
-        .B(opdata2_mult),
-        .P(hilo_temp)
-    );
+    // mult_gen_0 mult_gen_0(
+    //     .A(opdata1_mult),
+    //     .B(opdata2_mult),
+    //     .P(hilo_temp)
+    // );
 
     // // ������ˮ�߳˷���
     // reg [31:0] mul_op1, mul_op2;
