@@ -13,7 +13,9 @@ module dcache_new(
     input    wire        mem_oe_n_i,        // 读使能，低有效
     input    wire[3:0]   mem_be_n_i,        // 字节选择信号
     input    wire        mem_ce_n_i,        // 片选信号
+
     output   reg[31:0]   ram_data_o,        // 读取的数据输出
+    
     output   reg         stall              // 流水线暂停信号
 );
 
