@@ -16,7 +16,7 @@ module stall_controller(
 		end else if(stall_from_icache == `Stop ) begin
 			stall <= 6'b111111;				
 		end else if(stall_from_mem == `Stop) begin
-			stall <= 6'b011111;
+			stall <= 6'b111111;
 		end else if(stall_from_ex == `Stop) begin
 			stall <= 6'b001111;
 		end else if(stall_from_id == `Stop || stall_from_bus == `Stop) begin

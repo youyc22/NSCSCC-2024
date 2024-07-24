@@ -31,10 +31,12 @@ module ex_state(
 );
     // �ڲ��źŶ���
     reg [31:0] logicout, shiftres, arithmeticres;
-    reg [63:0] mulres;
+    //reg [63:0] mulres;
+    reg [31:0] mulres_32;
     wire [31:0] reg2_i_sign;
     wire [31:0] result_sum;
-    wire [63:0] hilo_temp;
+    //wire [63:0] hilo_temp;
+    wire [31:0] hilo_temp_32;
     wire [31:0] opdata1_mult, opdata2_mult;
     //wire overflow_flag;
 
@@ -76,14 +78,14 @@ module ex_state(
     assign opdata2_mult = (aluop_i == `MUL_OP) ? reg2_i : 32'b0;
 
     always @(*) begin
-        mulres = (rst == `RstEnable) ? 64'd0 :
-            (aluop_i == `MUL_OP) ? hilo_temp : 64'd0;
+        mulres_32 = (rst == `RstEnable) ? 32'd0 :
+            (aluop_i == `MUL_OP) ? hilo_temp_32 : 32'd0;
     end
 
-    mult_gen_0 mult_gen_0(
+    mult_gen_1 mult_gen_1(
         .A(opdata1_mult),
         .B(opdata2_mult),
-        .P(hilo_temp)
+        .P(hilo_temp_32)
     );
 
     // // �˷�����
@@ -149,7 +151,7 @@ module ex_state(
              `RES_LOGIC: 		wdata_o = logicout;
              `RES_SHIFT: 		wdata_o = shiftres;
              `RES_ARITHMETIC: 	wdata_o = arithmeticres;
-             `RES_MUL: 			wdata_o = mulres[31:0];
+             `RES_MUL: 			wdata_o = mulres_32;
              `RES_JUMP_BRANCH: 	wdata_o = link_address_i;
             default: 			wdata_o = `ZeroWord;
         endcase

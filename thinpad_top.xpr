@@ -37,13 +37,13 @@
     <Option Name="WTVcsLaunchSim" Val="0"/>
     <Option Name="WTRivieraLaunchSim" Val="0"/>
     <Option Name="WTActivehdlLaunchSim" Val="0"/>
-    <Option Name="WTXSimExportSim" Val="33"/>
-    <Option Name="WTModelSimExportSim" Val="33"/>
-    <Option Name="WTQuestaExportSim" Val="33"/>
-    <Option Name="WTIesExportSim" Val="33"/>
-    <Option Name="WTVcsExportSim" Val="33"/>
-    <Option Name="WTRivieraExportSim" Val="33"/>
-    <Option Name="WTActivehdlExportSim" Val="33"/>
+    <Option Name="WTXSimExportSim" Val="34"/>
+    <Option Name="WTModelSimExportSim" Val="34"/>
+    <Option Name="WTQuestaExportSim" Val="34"/>
+    <Option Name="WTIesExportSim" Val="34"/>
+    <Option Name="WTVcsExportSim" Val="34"/>
+    <Option Name="WTRivieraExportSim" Val="34"/>
+    <Option Name="WTActivehdlExportSim" Val="34"/>
     <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
     <Option Name="XSimRadix" Val="hex"/>
     <Option Name="XSimTimeUnit" Val="ns"/>
@@ -56,7 +56,7 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sources_1/ip/mult_gen_0/mult_gen_0.xci">
+      <File Path="$PSRCDIR/sources_1/ip/mult_gen_1/mult_gen_1.xci">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -191,6 +191,14 @@
       </File>
       <File Path="$PSRCDIR/sources_1/new/thinpad_top.v">
         <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/ip/mult_gen_0/mult_gen_0.xci">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
