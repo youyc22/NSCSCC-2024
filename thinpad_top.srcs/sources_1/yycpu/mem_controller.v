@@ -1,4 +1,4 @@
-module dcache_new(
+module mem_controller(
     // 时钟和复位信号
     input    wire        clk,
     input    wire        rst,
