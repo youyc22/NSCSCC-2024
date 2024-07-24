@@ -51,7 +51,7 @@ module dcache(
     wire [Tag-1:0] ram_tag_i = mem_addr_i[22:7];           // 从地址中提取标签
     wire [Cache_Index-1:0]  ram_cache_i = mem_addr_i[6:2]; // 从地址中提取缓存索引
 
-    wire hit = 1'b0; // 缓存命中信号（这里似乎未实现）
+    wire hit = 1'b0; 
     
     reg finish_read;  // 读完成标志
     reg finish_write; // 写完成标志

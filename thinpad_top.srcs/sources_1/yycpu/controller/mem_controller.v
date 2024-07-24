@@ -15,7 +15,6 @@ module mem_controller(
     input    wire        mem_ce_n_i,        // 片选信号
 
     output   reg[31:0]   ram_data_o,        // 读取的数据输出
-    
     output   reg         stall              // 流水线暂停信号
 );
 
@@ -26,6 +25,12 @@ module mem_controller(
 
     reg[1:0] state, next_state;
 
+    reg finish_read;  // 读完成标志
+    reg finish_write; // 写完成标志
+
+    // 处理串口请求
+    wire uart_req = (~mem_ce_n_i & ((mem_addr_i == 32'hbfd003f8)|(mem_addr_i == 32'hbfd003fc)))?1'b1:1'b0;
+
     // 状态机时序逻辑
     always@(posedge clk, posedge rst) begin
         if(rst) begin
@@ -34,12 +39,6 @@ module mem_controller(
             state <= next_state;
         end
     end
-
-    // 处理串口请求
-    wire uart_req = (~mem_ce_n_i & ((mem_addr_i == 32'hbfd003f8)|(mem_addr_i == 32'hbfd003fc)))?1'b1:1'b0;
-
-    reg finish_read;  // 读完成标志
-    reg finish_write; // 写完成标志
 
     // 主要的读写操作逻辑
     always@(*) begin
@@ -52,7 +51,7 @@ module mem_controller(
             IDLE: begin
                 finish_read = 1'b0;
                 finish_write = 1'b0;
-                if(uart_req || !mem_oe_n_i) begin
+                if(uart_req || ~mem_oe_n_i) begin
                     // 串口请求或读请求时，直接从 SRAM 读取数据
                     ram_data_o = ram_data_i;                
                 end else begin
