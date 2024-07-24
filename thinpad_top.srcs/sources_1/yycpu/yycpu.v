@@ -259,61 +259,61 @@ module yycpu(
 		.mem_reg2(mem_reg2_i)						       	
 	);
 	
-	mem_no mem_no(
-		.clk(clk),
-		.rst(rst),
-		.ram_data_i(ram_data_i),
-		.wd_i(mem_wd_i),
-		.wreg_i(mem_wreg_i),
-		.wdata_i(mem_wdata_i),
-		.aluop_i(mem_aluop_i),
-		.mem_addr_i(mem_mem_addr_i),
-		.reg2_i(mem_reg2_i),
-		.wd_o(mem_wd_o),
-		.wreg_o(mem_wreg_o),
-		.wdata_o(mem_wdata_o),
-		.mem_addr_o(ram_addr_o),
-		.mem_data_o(ram_data_o),
-		.mem_we_n(ram_we_n),
-		.mem_be_n(ram_be_n),
-		.mem_ce_n(ram_ce_n),
-		.mem_oe_n(ram_oe_n),
-		.stall(stall_from_dcache)	
-	);
-  	// //MEM???????
-	// mem_state u_mem_state(
+	// mem_no mem_no(
+	// 	.clk(clk),
 	// 	.rst(rst),
+	// 	.ram_data_i(ram_data_i),
 	// 	.wd_i(mem_wd_i),
 	// 	.wreg_i(mem_wreg_i),
 	// 	.wdata_i(mem_wdata_i),
-	//     .aluop_i(mem_aluop_i),
+	// 	.aluop_i(mem_aluop_i),
 	// 	.mem_addr_i(mem_mem_addr_i),
 	// 	.reg2_i(mem_reg2_i),
-	// 	.mem_data_i(ram_data_cache_o),
 	// 	.wd_o(mem_wd_o),
 	// 	.wreg_o(mem_wreg_o),
 	// 	.wdata_o(mem_wdata_o),
-    //     .mem_addr_o(ram_addr_o),
+	// 	.mem_addr_o(ram_addr_o),
 	// 	.mem_data_o(ram_data_o),
 	// 	.mem_we_n(ram_we_n),
 	// 	.mem_be_n(ram_be_n),
 	// 	.mem_ce_n(ram_ce_n),
-	// 	.mem_oe_n(ram_oe_n)	
+	// 	.mem_oe_n(ram_oe_n),
+	// 	.stall(stall_from_dcache)	
 	// );
+  	//MEM???????
+	mem_state u_mem_state(
+		.rst(rst),
+		.wd_i(mem_wd_i),
+		.wreg_i(mem_wreg_i),
+		.wdata_i(mem_wdata_i),
+	    .aluop_i(mem_aluop_i),
+		.mem_addr_i(mem_mem_addr_i),
+		.reg2_i(mem_reg2_i),
+		.mem_data_i(ram_data_cache_o),
+		.wd_o(mem_wd_o),
+		.wreg_o(mem_wreg_o),
+		.wdata_o(mem_wdata_o),
+        .mem_addr_o(ram_addr_o),
+		.mem_data_o(ram_data_o),
+		.mem_we_n(ram_we_n),
+		.mem_be_n(ram_be_n),
+		.mem_ce_n(ram_ce_n),
+		.mem_oe_n(ram_oe_n)	
+	);
 	
-	// dcache_new u_dcache(
-	// 	.clk(clk),
-	// 	.rst(rst),
-	// 	.ram_data_o(ram_data_cache_o),        //?????????
-	// 	.mem_addr_i(ram_addr_o),        	  //????��?????
-	// 	.mem_data_i(ram_data_o),              //��?????????
-	// 	.mem_we_n_i(ram_we_n),          	  //��????????��
-	// 	.mem_be_n_i(ram_be_n),         	  //??????????????��
-	// 	.mem_oe_n_i(ram_oe_n),          	  //??????????��
-	// 	.mem_ce_n_i(ram_ce_n),          	  //?????
-	// 	.stall(stall_from_dcache),
-	// 	.ram_data_i(ram_data_i)               //��?????????
-	// );
+	dcache_new u_dcache(
+		.clk(clk),
+		.rst(rst),
+		.ram_data_o(ram_data_cache_o),        //?????????
+		.mem_addr_i(ram_addr_o),        	  //????��?????
+		.mem_data_i(ram_data_o),              //��?????????
+		.mem_we_n_i(ram_we_n),          	  //��????????��
+		.mem_be_n_i(ram_be_n),         	  //??????????????��
+		.mem_oe_n_i(ram_oe_n),          	  //??????????��
+		.mem_ce_n_i(ram_ce_n),          	  //?????
+		.stall(stall_from_dcache),
+		.ram_data_i(ram_data_i)               //��?????????
+	);
 
 	//MEM/WB???
 	mem_wb_reg u_mem_wb_reg(
