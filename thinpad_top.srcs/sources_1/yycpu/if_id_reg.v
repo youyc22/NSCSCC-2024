@@ -1,4 +1,4 @@
-//if/id½×¶Î¼Ä´æ??
+//if/idï¿½×¶Î¼Ä´ï¿½??
 
 `include "defines.v"
 
@@ -7,15 +7,15 @@ module if_id_reg(
 	input wire										rst,
 	input wire[5:0]                            		stall,
 
-	input wire[31:0]								if_pc_i,		//if½×¶ÎµÄpc
-	input wire[31:0]          						if_inst_i,	//if½×¶ÎµÄÖ¸??
-	output reg[31:0]      							id_pc_o,		//id½×¶ÎµÄpc
-	output reg[31:0]          						id_inst_o  	//id½×¶ÎµÄÖ¸??
+	input wire[31:0]								if_pc_i,		//ifï¿½×¶Îµï¿½pc
+	input wire[31:0]          						if_inst_i,	//ifï¿½×¶Îµï¿½Ö¸??
+	output reg[31:0]      							id_pc_o,		//idï¿½×¶Îµï¿½pc
+	output reg[31:0]          						id_inst_o  	//idï¿½×¶Îµï¿½Ö¸??
 
-	//  // ÐÂÔö£ºÀ´×ÔIF½×¶ÎµÄÔ¤²âÐÅ??
+	//  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IFï¿½×¶Îµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½??
     // input wire                                      if_prediction_taken,
     // input wire[31:0]                        if_prediction_target,
-	// // ÐÂÔö£º´«µÝ¸øID½×¶ÎµÄÔ¤²âÐÅ??
+	// // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½IDï¿½×¶Îµï¿½Ô¤ï¿½ï¿½ï¿½ï¿½??
     // output reg                                      id_prediction_taken,
     // output reg[31:0]                        id_prediction_target
 );

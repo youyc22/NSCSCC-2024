@@ -15,13 +15,13 @@ module uart_controller (
     parameter clk_freq = 109*1000000;
     parameter baud = 9600;
     
-    wire [7:0] RxD_data;
     reg [7:0] TxD_data;
+    reg TxD_start;
+
+    wire [7:0] RxD_data;
     wire RxD_data_ready;
     wire TxD_busy;
     wire RxD_clear;
-    reg TxD_start;
-    
     wire is_SerialState = (mem_addr_i == 32'hBFD003FC);
     wire is_SerialData = (mem_addr_i == 32'hBFD003F8);
 

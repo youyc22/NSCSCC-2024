@@ -8,8 +8,6 @@
 `define ReadDisable 1'b0
 `define Stop 1'b1
 `define NoStop 1'b0
-`define InDelaySlot 1'b1
-`define NotInDelaySlot 1'b0
 `define Branch 1'b1
 `define NotBranch 1'b0
 `define ChipEnable 1'b1

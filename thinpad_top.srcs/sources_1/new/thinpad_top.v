@@ -56,7 +56,9 @@ module thinpad_top(
 /* =========== Demo code begin =========== */
 
 // PLL��Ƶʾ��
-wire locked, clk1, clk2;
+wire locked, clk1;
+reg reset1;
+
 pll_example clock_gen 
  (
   .clk_in1(clk_50M),
@@ -65,19 +67,15 @@ pll_example clock_gen
   .locked(locked)
  );
 
-reg reset1, reset2;
-
 always @(posedge clk1 or negedge locked) begin
     if (~locked) reset1 <= 1;
-    else        reset1 <= 0;
+    else         reset1 <= 0;
 end
 
-wire [31:0]  rom_addr_o ;
+wire [31:0]  rom_addr_o;
 wire         rom_ce_n;
-
-wire [31:0]  inst_i ;
+wire [31:0]  inst_i;
 wire [31:0]  serial_i;
-
 wire [31:0]  ram_data_i;
 wire [31:0]  ram_addr_o;
 wire [31:0]  ram_data_o;
@@ -85,8 +83,6 @@ wire         ram_we_n;
 wire         ram_oe_n;
 wire         ram_ce_n;
 wire [3:0]   ram_be_n;
-
-wire         stall_from_mem;
 wire         stall_from_bus;
 
 

@@ -1,6 +1,5 @@
 `include "defines.v"
 
-
 module id_state(
 	input wire									rst,
 	//??if??ν???????
@@ -24,9 +23,6 @@ module id_state(
 	input wire									mem_wreg_i,
 	input wire[31:0]							mem_wdata_i,
 	input wire[4:0]                  	        mem_wd_i,
-	
-    //????
-    input wire                    				is_in_delayslot_i,
 
 	//???regfile?????
 	output reg                    				reg1_read_o,
@@ -42,16 +38,12 @@ module id_state(
 	output reg[4:0]       						waddr_o,//д?????
 	output reg                   	 			wreg_o,//????д??
 	
-	//????
-	output reg                   				next_inst_in_delayslot_o,
-	
 	output reg                    				branch_flag_o,
 	output reg[31:0]           					branch_target_o,       
 	output reg[31:0]           					link_addr_o,
-	output reg                    				is_in_delayslot_o,
 	//ls
 	output wire[31:0]          					inst_o,
-	output wire        							stall    
+	output wire        							stall_from_id    
 );
 
 	wire[5:0] op = inst_i[31:26];
@@ -60,23 +52,18 @@ module id_state(
 	wire[4:0] rd = inst_i[15:11];
 	wire[4:0] shamt = inst_i[10:6];
 	wire[5:0] func = inst_i[5:0];
-		
-	reg[31:0] imm_o;
-
-	//????
+    wire pre_inst_is_load;
 	wire[31:0] pc_plus_8 = pc_i + 8;
 	wire[31:0] pc_plus_4 = pc_i + 4;
 	wire[31:0] branch_addr = pc_plus_4 + {{14{inst_i[15]}}, inst_i[15:0], 2'b00 };
 
     //????load???
     reg stall_for_reg1_load, stall_for_reg2_load;
-    wire pre_inst_is_load;
+	reg[31:0] imm_o;
 	
     //ls
     assign inst_o = inst_i;
-
-  	//????????
-    assign stall = stall_for_reg1_load | stall_for_reg2_load;
+    assign stall_from_id = stall_for_reg1_load | stall_for_reg2_load;
     assign pre_inst_is_load = (ex_aluop_i ==  `LW_OP)||(ex_aluop_i ==  `LB_OP)  ? 1'b1 : 1'b0;
       
 	always @ (*) begin	
@@ -93,7 +80,6 @@ module id_state(
 			link_addr_o <= `ZeroWord;
 			branch_target_o <= `ZeroWord;
 			branch_flag_o <= `NotBranch;
-			next_inst_in_delayslot_o <= `NotInDelaySlot;	
 	  	end else begin
 			aluop_o <=  `NOP_OP;
 			alusel_o <=  `RES_NOP;
@@ -107,7 +93,6 @@ module id_state(
 			link_addr_o <= `ZeroWord;
 			branch_target_o <= `ZeroWord;
 			branch_flag_o <= `NotBranch;			
-			next_inst_in_delayslot_o <= `NotInDelaySlot; 
 		case (op)
 		 `SPECIAL_INST:	begin
 			case (func)
@@ -117,7 +102,7 @@ module id_state(
 				alusel_o <=  `RES_SHIFT;	
 				reg1_read_o <= 1'b0;	
 				reg2_read_o <= 1'b1;
-				imm_o <= {27'b0, shamt};
+				imm_o[4:0] <= shamt;
 				end
 			`SRL:       begin
 				wreg_o <= `WriteEnable;		
@@ -186,7 +171,6 @@ module id_state(
 				link_addr_o <= `ZeroWord;	  						
 				branch_target_o <= reg1_o;
 				branch_flag_o <= `Branch;			           
-				next_inst_in_delayslot_o <= `InDelaySlot;	
 				end
 			`JALR:	 	begin
 				wreg_o <= `WriteEnable;			
@@ -197,7 +181,6 @@ module id_state(
 				link_addr_o <= pc_plus_8;
 				branch_target_o <= reg1_o;
 				branch_flag_o <= `Branch;			           
-				next_inst_in_delayslot_o <= `InDelaySlot;
 				end
 			default:		begin
 				end
@@ -256,8 +239,7 @@ module id_state(
 			reg2_read_o <= 1'b0;
 			link_addr_o <= `ZeroWord;
 			branch_target_o <= {pc_plus_4[31:28], inst_i[25:0], 2'b00};
-			branch_flag_o <= `Branch;
-			next_inst_in_delayslot_o <= `InDelaySlot;		  		
+			branch_flag_o <= `Branch;  		
 			end
 		`JAL:				begin
 			wreg_o <= `WriteEnable;		
@@ -268,8 +250,7 @@ module id_state(
 			waddr_o <= 5'b11111;	
 			link_addr_o <= pc_plus_8 ;
 			branch_target_o <= {pc_plus_4[31:28], inst_i[25:0], 2'b00};
-			branch_flag_o <= `Branch;
-			next_inst_in_delayslot_o <= `InDelaySlot;		  		
+			branch_flag_o <= `Branch;	  		
 			end
 		`BEQ:				begin
 			wreg_o <= `WriteDisable;		
@@ -279,25 +260,24 @@ module id_state(
 			reg2_read_o <= 1'b1;
 			if(reg1_o == reg2_o) begin
 				branch_target_o <= branch_addr;
-				branch_flag_o <= `Branch;
-				next_inst_in_delayslot_o <= `InDelaySlot;		  	
+				branch_flag_o <= `Branch;	  	
 			end else begin
 				branch_target_o <= `ZeroWord;
 				branch_flag_o <= `NotBranch;	
-				next_inst_in_delayslot_o <= `NotInDelaySlot; 
 			end
 			end
 		`BNE:				begin
-			wreg_o <= `WriteDisable;		aluop_o <=  `BLEZ_OP;
-			alusel_o <=  `RES_JUMP_BRANCH; reg1_read_o <= 1'b1;	reg2_read_o <= 1'b1;
+			wreg_o <= `WriteDisable;		
+			aluop_o <=  `BLEZ_OP;
+			alusel_o <=  `RES_JUMP_BRANCH; 
+			reg1_read_o <= 1'b1;	
+			reg2_read_o <= 1'b1;
 			if(reg1_o != reg2_o) begin
 				branch_target_o <= branch_addr;
-				branch_flag_o <= `Branch;
-				next_inst_in_delayslot_o <= `InDelaySlot;		  	
+				branch_flag_o <= `Branch;	  	
 			end else begin
 				branch_target_o <= `ZeroWord;
 				branch_flag_o <= `NotBranch;	
-				next_inst_in_delayslot_o <= `NotInDelaySlot; 
 			end
 			end	
 		`BGTZ:				begin
@@ -308,12 +288,10 @@ module id_state(
 			reg2_read_o <= 1'b0;
 			if((reg1_o[31] == 1'b0) && (reg1_o != `ZeroWord)) begin
 				branch_target_o <= branch_addr;
-				branch_flag_o <= `Branch;
-				next_inst_in_delayslot_o <= `InDelaySlot;		  	
+				branch_flag_o <= `Branch;	  	
 			end else begin
 				branch_target_o <= `ZeroWord;
 				branch_flag_o <= `NotBranch;	
-				next_inst_in_delayslot_o <= `NotInDelaySlot; 
 			end
 			end		
 		`MUL:				begin
@@ -384,9 +362,9 @@ module id_state(
 			reg2_o <= `ZeroWord;
 		end else if(pre_inst_is_load == 1'b1 && ex_wd_i == reg2_addr_o && reg2_read_o == 1'b1 ) begin
 		  	stall_for_reg2_load <= `Stop;	
-		end else if((reg2_read_o == 1'b1) && (ex_wreg_i == 1'b1) && (ex_wd_i == reg2_addr_o)) begin
+		end else if((reg2_read_o == 1'b1) && (ex_wreg_i == 1'b1) && (ex_wd_i == reg2_addr_o) && (ex_wd_i != 5'b0)) begin
 			reg2_o <= ex_wdata_i; 
-		end else if((reg2_read_o == 1'b1) && (mem_wreg_i == 1'b1) && (mem_wd_i == reg2_addr_o)) begin
+		end else if((reg2_read_o == 1'b1) && (mem_wreg_i == 1'b1) && (mem_wd_i == reg2_addr_o) && (mem_wd_i != 5'b0)) begin
 			reg2_o <= mem_wdata_i;		
 		end else if(reg2_read_o == 1'b1) begin
 			reg2_o <= reg2_data_i;
@@ -395,14 +373,6 @@ module id_state(
 		end else begin
 			reg2_o <= `ZeroWord;
 		end
-	end
-
-	always @ (*) begin
-		if(rst == `RstEnable) begin
-			is_in_delayslot_o <= `NotInDelaySlot;
-		end else begin
-		  	is_in_delayslot_o <= is_in_delayslot_i;		
-	  	end
 	end
 
 endmodule

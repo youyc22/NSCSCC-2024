@@ -13,8 +13,6 @@ module id_ex_reg(
     input wire[5:0]                stall,
     //延迟槽
     input wire[31:0]               id_link_address,
-    input wire                     id_is_in_delayslot,
-    input wire                     next_inst_in_delayslot_i,
     input wire[31:0]               id_inst,//指令
     //传递到执行阶段的信息
     output reg[4:0]                ex_aluop,
@@ -25,8 +23,6 @@ module id_ex_reg(
     output reg                     ex_wreg,
     //延迟槽
     output reg[31:0]               ex_link_address,
-    output reg                     ex_is_in_delayslot,
-    output reg                     is_in_delayslot_o,
     output reg [31:0]              ex_inst//指令
 );
 
@@ -39,8 +35,6 @@ module id_ex_reg(
             ex_wd <= 5'b00000;
             ex_wreg <= `WriteDisable;
             ex_link_address <= `ZeroWord;
-            ex_is_in_delayslot <= `NotInDelaySlot;
-            is_in_delayslot_o <= `NotInDelaySlot;
             ex_inst <= `ZeroWord;
         end else if(stall[2] == `NoStop) begin
             ex_aluop <= id_aluop;
@@ -50,8 +44,6 @@ module id_ex_reg(
             ex_wd <= id_wd;
             ex_wreg <= id_wreg;
             ex_link_address <= id_link_address;
-            ex_is_in_delayslot <= id_is_in_delayslot;
-            is_in_delayslot_o <= next_inst_in_delayslot_i;
             ex_inst <= id_inst;
         end
     end

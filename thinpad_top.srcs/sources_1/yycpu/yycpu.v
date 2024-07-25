@@ -33,8 +33,6 @@ module yycpu(
 	
 	//???
 	wire[31:0] id_inst_o;
-	//????
-	wire id_is_in_delayslot_o;
   	wire[31:0] id_link_address_o;
 	
 	//????ID/EX???????????��??EX??????????
@@ -45,7 +43,6 @@ module yycpu(
 	wire ex_wreg_i;
 	wire[4:0] ex_wd_i;
 	//????
-	wire ex_is_in_delayslot_i;	
     wire[31:0] ex_link_address_i;
 	//???
 	wire[31:0] ex_inst_i;
@@ -69,7 +66,7 @@ module yycpu(
 	//???
 	wire[4:0] mem_aluop_i;
 	wire[31:0] mem_mem_addr_i;
-	wire[31:0] mem_reg1_i;
+	//wire[31:0] mem_reg1_i;
 	wire[31:0] mem_reg2_i;	
 
 	//????????MEM?????????MEM/WB??????????
@@ -96,9 +93,6 @@ module yycpu(
 	wire stall_from_ex;
   
   	//????
-  	wire is_in_delayslot_i;
-	wire is_in_delayslot_o;
-	wire next_inst_in_delayslot_o;
 	wire id_branch_flag_o;
 	wire[31:0] branch_target_address;
 	
@@ -114,16 +108,17 @@ module yycpu(
 		.branch_flag_i(id_branch_flag_o),
 		.branch_target_address_i(branch_target_address),
 		.if_pc(rom_addr_o),
-		.ce_n_i(rom_ce_n)
+		.rom_ce_n(rom_ce_n)
 	);
 
+	//直接映像icache，可替换为组相联模块
 	icache_direct u_icache(
 		.clk(clk),
 		.rst(rst),
 		.rom_addr_i(rom_addr_o),        //??????????
 		.rom_ce_n_i(rom_ce_n),          //????????????????
 		.inst_o(rom_data_icache),            //??????????
-		.stall(stall_from_icache),
+		.stall_from_icache(stall_from_icache),
 		.stall_from_bus(stall_from_bus),
 		.inst_i(rom_data_i)          //??????????
 	);
@@ -154,8 +149,6 @@ module yycpu(
 		.mem_wdata_i(mem_wdata_o),
 		.mem_wd_i(mem_wd_o),
 
-		.is_in_delayslot_i(is_in_delayslot_i),
-
 		.reg1_read_o(reg1_read),
 		.reg2_read_o(reg2_read), 	  
 		.reg1_addr_o(reg1_addr),
@@ -170,13 +163,11 @@ module yycpu(
 
 		.inst_o(id_inst_o),
 	
-		.next_inst_in_delayslot_o(next_inst_in_delayslot_o),	
 		.branch_flag_o(id_branch_flag_o),
 		.branch_target_o(branch_target_address),       
 		.link_addr_o(id_link_address_o),
-		.is_in_delayslot_o(id_is_in_delayslot_o),
 
-		.stall(stall_from_id)	
+		.stall_from_id(stall_from_id)	
 	);
 
 	regfile u_regfile(
@@ -205,8 +196,6 @@ module yycpu(
 		.id_wreg(id_wreg_o),
 		.id_inst(id_inst_o),
 		.id_link_address(id_link_address_o),
-		.id_is_in_delayslot(id_is_in_delayslot_o),
-		.next_inst_in_delayslot_i(next_inst_in_delayslot_o),
 		.ex_aluop(ex_aluop_i),
 		.ex_alusel(ex_alusel_i),
 		.ex_reg1(ex_reg1_i),
@@ -214,9 +203,7 @@ module yycpu(
 		.ex_wd(ex_wd_i),
 		.ex_wreg(ex_wreg_i),
 		.ex_inst(ex_inst_i),
-		.ex_link_address(ex_link_address_i),
-    	.ex_is_in_delayslot(ex_is_in_delayslot_i),
-		.is_in_delayslot_o(is_in_delayslot_i)	
+		.ex_link_address(ex_link_address_i)
 	);		
 	
 	ex_state u_ex_state(
@@ -233,13 +220,11 @@ module yycpu(
 		.wreg_o(ex_wreg_o),
 		.wdata_o(ex_wdata_o),
 		.link_address_i(ex_link_address_i),
-		.is_in_delayslot_i(ex_is_in_delayslot_i),	
 		.aluop_o(ex_aluop_o),
 		.mem_addr_o(ex_mem_addr_o),
 		.reg2_o(ex_reg2_o),
-		.stall(stall_from_ex)  
+		.stall_from_ex(stall_from_ex)  
 	);
-
 
     ex_mem_reg u_ex_mem_reg(
 		.clk(clk),
@@ -259,7 +244,7 @@ module yycpu(
 		.mem_reg2(mem_reg2_i)						       	
 	);
 	
-  	// //MEM???????
+  	//mem阶段
 	mem_state u_mem_state(
 		.rst(rst),
 		.wd_i(mem_wd_i),
@@ -280,17 +265,18 @@ module yycpu(
 		.mem_oe_n(ram_oe_n)	
 	);
 	
+	//此模块是为了方便直接替换为dcache
 	mem_controller u_mem(
 		.clk(clk),
 		.rst(rst),
-		.ram_data_o(ram_data_mem_o),        //?????????
+		.ram_data_o(ram_data_mem_o),          //?????????
 		.mem_addr_i(ram_addr_o),        	  //????��?????
 		.mem_data_i(ram_data_o),              //��?????????
 		.mem_we_n_i(ram_we_n),          	  //��????????��
-		.mem_be_n_i(ram_be_n),         	  //??????????????��
+		.mem_be_n_i(ram_be_n),         	      //??????????????��
 		.mem_oe_n_i(ram_oe_n),          	  //??????????��
 		.mem_ce_n_i(ram_ce_n),          	  //?????
-		.stall(stall_from_mem),
+		.stall_from_mem(stall_from_mem),
 		.ram_data_i(ram_data_i)               //��?????????
 	);
 

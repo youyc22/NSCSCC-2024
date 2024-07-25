@@ -4,17 +4,17 @@ module regfile(
 	input wire										clk,
 	input wire										rst,
 	
-	// Ð´¶Ë¿Ú
+	// Ð´ï¿½Ë¿ï¿½
 	input wire										reg_we,
 	input wire[4:0]									reg_w_addr,
 	input wire[31:0]								reg_w_data,
 	
-	// ¶Á¶Ë¿Ú1
+	// ï¿½ï¿½ï¿½Ë¿ï¿½1
 	input wire										reg_re1,
 	input wire[4:0]			  						reg_r_addr1,
 	output reg[31:0]           						reg_r_data1,
 	
-	// ¶Á¶Ë¿Ú2
+	// ï¿½ï¿½ï¿½Ë¿ï¿½2
 	input wire										reg_re2,
 	input wire[4:0]			  						reg_r_addr2,
 	output reg[31:0]           						reg_r_data2
@@ -23,7 +23,6 @@ module regfile(
 
 	reg[31:0]  regs[0:31];
 	
-    //§Õ??
 	always @ (posedge clk) begin
 		if (rst == `RstDisable) begin
 			if((reg_we == `WriteEnable) && (reg_w_addr != 5'h0)) begin
@@ -37,9 +36,9 @@ module regfile(
 	always @ (*) begin
 		if(rst == `RstEnable) begin
 			reg_r_data1 <= `ZeroWord;
-		end else if(reg_r_addr1 == 5'h0) begin //rs1=x0
+		end else if(reg_r_addr1 == 5'h0) begin 
 			reg_r_data1 <= `ZeroWord;
-		end else if((reg_r_addr1 == reg_w_addr) && (reg_we == `WriteEnable) && (reg_re1 == `ReadEnable)) begin //??§Õ???
+		end else if((reg_r_addr1 == reg_w_addr) && (reg_we == `WriteEnable) && (reg_re1 == `ReadEnable)) begin //??ï¿½ï¿½???
 			reg_r_data1 <= reg_w_data;
 		end else if(reg_re1 == `ReadEnable) begin
 			reg_r_data1 <= regs[reg_r_addr1];

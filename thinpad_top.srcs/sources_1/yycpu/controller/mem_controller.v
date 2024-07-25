@@ -15,7 +15,7 @@ module mem_controller(
     input    wire        mem_ce_n_i,        // 片选信号
 
     output   reg[31:0]   ram_data_o,        // 读取的数据输出
-    output   reg         stall              // 流水线暂停信号
+    output   reg         stall_from_mem     // 流水线暂停信号
 );
 
     // 状态机定义
@@ -24,7 +24,6 @@ module mem_controller(
     parameter WRITE_SRAM = 2;   // 写 SRAM 状态
 
     reg[1:0] state, next_state;
-
     reg finish_read;  // 读完成标志
     reg finish_write; // 写完成标志
 
@@ -76,7 +75,7 @@ module mem_controller(
     // 状态机组合逻辑
     always@(*) begin
         if(rst) begin
-            stall = 1'b0;
+            stall_from_mem = 1'b0;
             next_state = IDLE;
         end else begin
             case(state)
@@ -84,20 +83,20 @@ module mem_controller(
                     if(~mem_oe_n_i && ~mem_ce_n_i && !uart_req) begin
                         // 读请求，进入读 SRAM 状态
                         next_state = READ_SRAM;
-                        stall = 1'b1;
+                        stall_from_mem = 1'b1;
                     end else if(~mem_we_n_i && ~mem_ce_n_i && !uart_req) begin
                         // 写请求，进入写 SRAM 状态
                         next_state = WRITE_SRAM;
-                        stall = 1'b1;
+                        stall_from_mem = 1'b1;
                     end else begin
                         next_state = IDLE;
-                        stall = 1'b0;
+                        stall_from_mem = 1'b0;
                     end
                 end
                 READ_SRAM: begin
                     if(finish_read) begin
                         next_state = IDLE;
-                        stall = 1'b0;
+                        stall_from_mem = 1'b0;
                     end else begin
                         next_state = READ_SRAM;  
                     end 
@@ -105,7 +104,7 @@ module mem_controller(
                 WRITE_SRAM: begin
                     if(finish_write) begin
                         next_state = IDLE;
-                        stall = 1'b0;
+                        stall_from_mem = 1'b0;
                     end else begin
                         next_state = WRITE_SRAM;
                     end
