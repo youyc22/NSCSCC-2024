@@ -91,7 +91,7 @@ yycpu u_yycpu(
     .rst            (reset1),
 
     .rom_addr_o     (rom_addr_o),
-    .rom_ce_n       (rom_ce_n),
+    .rom_ce_n_o     (rom_ce_n),
     .rom_data_i     (inst_i),
     .stall_from_bus (stall_from_bus),
 

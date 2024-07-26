@@ -5,19 +5,19 @@ module regfile(
 	input wire										rst,
 	
 	// д�˿�
-	input wire										reg_we,
-	input wire[4:0]									reg_w_addr,
-	input wire[31:0]								reg_w_data,
+	input wire										reg_we_i,
+	input wire[4:0]									reg_w_addr_i,
+	input wire[31:0]								reg_w_data_i,
 	
 	// ���˿�1
-	input wire										reg_re1,
-	input wire[4:0]			  						reg_r_addr1,
-	output reg[31:0]           						reg_r_data1,
+	input wire										reg_re1_i,
+	input wire[4:0]			  						reg_r_addr1_i,
+	output reg[31:0]           						reg_r_data1_o,
 	
 	// ���˿�2
-	input wire										reg_re2,
-	input wire[4:0]			  						reg_r_addr2,
-	output reg[31:0]           						reg_r_data2
+	input wire										reg_re2_i,
+	input wire[4:0]			  						reg_r_addr2_i,
+	output reg[31:0]           						reg_r_data2_o
 	
 );
 
@@ -25,39 +25,39 @@ module regfile(
 	
 	always @ (posedge clk) begin
 		if (rst == `RstDisable) begin
-			if((reg_we == `WriteEnable) && (reg_w_addr != 5'h0)) begin
-				regs[reg_w_addr] <= reg_w_data;
-			end else if(reg_w_addr == 5'h0) begin
-			    regs[reg_w_addr] <= `ZeroWord;
+			if((reg_we_i == `WriteEnable) && (reg_w_addr_i != 5'h0)) begin
+				regs[reg_w_addr_i] <= reg_w_data_i;
+			end else if(reg_w_addr_i == 5'h0) begin
+			    regs[reg_w_addr_i] <= `ZeroWord;
 		    end
 		end
 	end
 	
 	always @ (*) begin
 		if(rst == `RstEnable) begin
-			reg_r_data1 <= `ZeroWord;
-		end else if(reg_r_addr1 == 5'h0) begin 
-			reg_r_data1 <= `ZeroWord;
-		end else if((reg_r_addr1 == reg_w_addr) && (reg_we == `WriteEnable) && (reg_re1 == `ReadEnable)) begin //??��???
-			reg_r_data1 <= reg_w_data;
-		end else if(reg_re1 == `ReadEnable) begin
-			reg_r_data1 <= regs[reg_r_addr1];
+			reg_r_data1_o <= `ZeroWord;
+		end else if(reg_r_addr1_i == 5'h0) begin 
+			reg_r_data1_o <= `ZeroWord;
+		end else if((reg_r_addr1_i == reg_w_addr_i) && (reg_we_i == `WriteEnable) && (reg_re1_i == `ReadEnable)) begin //??��???
+			reg_r_data1_o <= reg_w_data_i;
+		end else if(reg_re1_i == `ReadEnable) begin
+			reg_r_data1_o <= regs[reg_r_addr1_i];
 		end else begin
-			reg_r_data1 <= `ZeroWord;
+			reg_r_data1_o <= `ZeroWord;
 		end
 	end
 
 	always @ (*) begin
 		if(rst == `RstEnable) begin
-			reg_r_data2 <= `ZeroWord;
-		end else if(reg_r_addr2 == 5'h0) begin
-			reg_r_data2 <= `ZeroWord;
-		end else if((reg_r_addr2 == reg_w_addr) && (reg_we == `WriteEnable) && (reg_re2 == `ReadEnable)) begin
-			reg_r_data2 <= reg_w_data;
-		end else if(reg_re2 == `ReadEnable) begin
-			reg_r_data2 <= regs[reg_r_addr2];
+			reg_r_data2_o <= `ZeroWord;
+		end else if(reg_r_addr2_i == 5'h0) begin
+			reg_r_data2_o <= `ZeroWord;
+		end else if((reg_r_addr2_i == reg_w_addr_i) && (reg_we_i == `WriteEnable) && (reg_re2_i == `ReadEnable)) begin
+			reg_r_data2_o <= reg_w_data_i;
+		end else if(reg_re2_i == `ReadEnable) begin
+			reg_r_data2_o <= regs[reg_r_addr2_i];
 		end else begin
-			reg_r_data2 <= `ZeroWord;
+			reg_r_data2_o <= `ZeroWord;
 		end
 	end
 	

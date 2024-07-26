@@ -51,13 +51,12 @@ module dcache(
     wire [Tag-1:0] ram_tag_i = mem_addr_i[22:7];           // 从地址中提取标签
     wire [Cache_Index-1:0]  ram_cache_i = mem_addr_i[6:2]; // 从地址中提取缓存索引
 
-    wire hit = 1'b0; 
+    wire hit = (cache_valid[ram_cache_i] != 4'b0000) && (cache_tag[ram_cache_i] == ram_tag_i);
     
     reg finish_read;  // 读完成标志
     reg finish_write; // 写完成标志
 
     integer i;
-    reg[63:0] wb_data_r;
 
     // 主要的缓存操作逻辑
     always@(*) begin

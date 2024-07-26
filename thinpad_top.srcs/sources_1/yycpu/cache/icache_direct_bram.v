@@ -1,12 +1,12 @@
 `include "defines.v"
 
-module icache_direct_1(
+module icache_direct_bram(
     input wire                    clk,
     input wire                    rst,
     (* DONT_TOUCH = "1" *) input  wire[31:0]  rom_addr_i,
     (* DONT_TOUCH = "1" *) input  wire        rom_ce_n_i,
     output reg [31:0]             inst_o,
-    output reg                    stall,
+    output reg                    stall_from_icache,
     input wire                    stall_from_bus,
     input wire [31:0]             inst_i
 );
@@ -112,32 +112,32 @@ end
 
 always @(*) begin
     if(rst) begin
-        stall = 1'b0;     
+        stall_from_icache = 1'b0;     
         next_state = READ_SRAM;
     end else begin
         case(state)
             IDLE: begin
                 if(~rom_ce_n_i && ~hit && ~stall_from_bus) begin
                     next_state = READ_SRAM;
-                    stall = 1'b1;
+                    stall_from_icache = 1'b1;
                 end else begin
                     next_state = IDLE;
-                    stall = 1'b0;
+                    stall_from_icache = 1'b0;
                 end
             end
             READ_SRAM: begin
                 if(finish_read) begin
                     next_state = IDLE;
-                    stall = 1'b0;
+                    stall_from_icache = 1'b0;
                 end
                 else begin
                     next_state = READ_SRAM;
-                    stall = 1'b1;  
+                    stall_from_icache = 1'b1;  
                 end 
             end
             default: begin 
                 next_state = IDLE;
-                stall = 1'b0;
+                stall_from_icache = 1'b0;
             end
         endcase
     end
