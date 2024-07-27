@@ -92,7 +92,7 @@ module yycpu(
 	);
 
 	//直接映像icache，可替换为组相联模块
-	icache_direct_3 u_icache(
+	icache_direct u_icache(
 		.clk(clk),
 		.rst(rst),
 		.stall_from_icache(stall_from_icache),
@@ -257,7 +257,7 @@ module yycpu(
 	);
 	
 	//此模块是为了方便直接替换为dcache
-	mem_controller_3 u_mem(
+	mem_controller u_mem(
 		.clk(clk),
 		.rst(rst),
 		.stall_from_mem(stall_from_mem),
