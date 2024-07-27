@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="tb_behav.wdb" id="1">
+      <db_ref path="tb_time_synth.wdb" id="1">
          <top_modules>
             <top_module name="glbl" />
             <top_module name="tb" />
@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="7381667fs"></ZoomStartTime>
-      <ZoomEndTime time="10215668fs"></ZoomEndTime>
-      <Cursor1Time time="9209667fs"></Cursor1Time>
+      <ZoomStartTime time="2221975fs"></ZoomStartTime>
+      <ZoomEndTime time="2386476fs"></ZoomEndTime>
+      <Cursor1Time time="2359059fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="237"></NameColumnWidth>
-      <ValueColumnWidth column_width="145"></ValueColumnWidth>
+      <ValueColumnWidth column_width="137"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="40" />
+   <WVObjectSize size="103" />
    <wvobject fp_name="/tb/clk_50M" type="logic">
       <obj_property name="ElementShortName">clk_50M</obj_property>
       <obj_property name="ObjectShortName">clk_50M</obj_property>
@@ -100,29 +100,13 @@
       <obj_property name="ElementShortName">ext_ram_be_n[3:0]</obj_property>
       <obj_property name="ObjectShortName">ext_ram_be_n[3:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb/dut/u_yycpu/u_icache/hit" type="logic">
-      <obj_property name="ElementShortName">hit</obj_property>
-      <obj_property name="ObjectShortName">hit</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb/dut/u_yycpu/u_icache/stall_from_bus" type="logic">
       <obj_property name="ElementShortName">stall_from_bus</obj_property>
       <obj_property name="ObjectShortName">stall_from_bus</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb/dut/u_sram/is_base_ram" type="logic">
-      <obj_property name="ElementShortName">is_base_ram</obj_property>
-      <obj_property name="ObjectShortName">is_base_ram</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb/dut/u_sram/is_ext_ram" type="logic">
-      <obj_property name="ElementShortName">is_ext_ram</obj_property>
-      <obj_property name="ObjectShortName">is_ext_ram</obj_property>
-   </wvobject>
    <wvobject fp_name="/tb/dut/u_yycpu/u_mem/stall_from_mem" type="logic">
       <obj_property name="ElementShortName">stall_from_mem</obj_property>
       <obj_property name="ObjectShortName">stall_from_mem</obj_property>
-   </wvobject>
-   <wvobject fp_name="/tb/dut/u_yycpu/u_stall_ctrl/stall_from_icache" type="logic">
-      <obj_property name="ElementShortName">stall_from_icache</obj_property>
-      <obj_property name="ObjectShortName">stall_from_icache</obj_property>
    </wvobject>
    <wvobject fp_name="/tb/ext_ram_ce_n" type="logic">
       <obj_property name="ElementShortName">ext_ram_ce_n</obj_property>
@@ -179,5 +163,273 @@
    <wvobject fp_name="/tb/FLASH_INIT_FILE" type="array">
       <obj_property name="ElementShortName">FLASH_INIT_FILE[119:0]</obj_property>
       <obj_property name="ObjectShortName">FLASH_INIT_FILE[119:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/Address" type="array">
+      <obj_property name="ElementShortName">Address[19:0]</obj_property>
+      <obj_property name="ObjectShortName">Address[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/OE_n" type="logic">
+      <obj_property name="ElementShortName">OE_n</obj_property>
+      <obj_property name="ObjectShortName">OE_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/CE_n" type="logic">
+      <obj_property name="ElementShortName">CE_n</obj_property>
+      <obj_property name="ObjectShortName">CE_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/WE_n" type="logic">
+      <obj_property name="ElementShortName">WE_n</obj_property>
+      <obj_property name="ObjectShortName">WE_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/LB_n" type="logic">
+      <obj_property name="ElementShortName">LB_n</obj_property>
+      <obj_property name="ObjectShortName">LB_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/UB_n" type="logic">
+      <obj_property name="ElementShortName">UB_n</obj_property>
+      <obj_property name="ObjectShortName">UB_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/twc" type="array">
+      <obj_property name="ElementShortName">twc[63:0]</obj_property>
+      <obj_property name="ObjectShortName">twc[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tcw" type="array">
+      <obj_property name="ElementShortName">tcw[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tcw[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/taw" type="array">
+      <obj_property name="ElementShortName">taw[63:0]</obj_property>
+      <obj_property name="ObjectShortName">taw[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tas" type="array">
+      <obj_property name="ElementShortName">tas[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tas[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/twp1" type="array">
+      <obj_property name="ElementShortName">twp1[63:0]</obj_property>
+      <obj_property name="ObjectShortName">twp1[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/twp2" type="array">
+      <obj_property name="ElementShortName">twp2[63:0]</obj_property>
+      <obj_property name="ObjectShortName">twp2[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/twr" type="array">
+      <obj_property name="ElementShortName">twr[63:0]</obj_property>
+      <obj_property name="ObjectShortName">twr[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tah" type="array">
+      <obj_property name="ElementShortName">tah[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tah[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tdw" type="array">
+      <obj_property name="ElementShortName">tdw[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tdw[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tdh" type="array">
+      <obj_property name="ElementShortName">tdh[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tdh[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/twz" type="array">
+      <obj_property name="ElementShortName">twz[63:0]</obj_property>
+      <obj_property name="ObjectShortName">twz[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tow" type="array">
+      <obj_property name="ElementShortName">tow[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tow[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tbw" type="array">
+      <obj_property name="ElementShortName">tbw[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tbw[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/UB_n_start_time" type="array">
+      <obj_property name="ElementShortName">UB_n_start_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">UB_n_start_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/LB_n_start_time" type="array">
+      <obj_property name="ElementShortName">LB_n_start_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">LB_n_start_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/write_address1_time" type="array">
+      <obj_property name="ElementShortName">write_address1_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">write_address1_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/write_data1_time" type="array">
+      <obj_property name="ElementShortName">write_data1_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">write_data1_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/write_CE_n_start_time1" type="array">
+      <obj_property name="ElementShortName">write_CE_n_start_time1[63:0]</obj_property>
+      <obj_property name="ObjectShortName">write_CE_n_start_time1[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/write_WE_n_start_time1" type="array">
+      <obj_property name="ElementShortName">write_WE_n_start_time1[63:0]</obj_property>
+      <obj_property name="ObjectShortName">write_WE_n_start_time1[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/write_CE_n_start_time" type="array">
+      <obj_property name="ElementShortName">write_CE_n_start_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">write_CE_n_start_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/write_WE_n_start_time" type="array">
+      <obj_property name="ElementShortName">write_WE_n_start_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">write_WE_n_start_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/write_address_time" type="array">
+      <obj_property name="ElementShortName">write_address_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">write_address_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/write_data_time" type="array">
+      <obj_property name="ElementShortName">write_data_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">write_data_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/temptaa" type="array">
+      <obj_property name="ElementShortName">temptaa[63:0]</obj_property>
+      <obj_property name="ObjectShortName">temptaa[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/temptoe" type="array">
+      <obj_property name="ElementShortName">temptoe[63:0]</obj_property>
+      <obj_property name="ObjectShortName">temptoe[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/read_address_add" type="array">
+      <obj_property name="ElementShortName">read_address_add[63:0]</obj_property>
+      <obj_property name="ObjectShortName">read_address_add[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/read_address_oe" type="array">
+      <obj_property name="ElementShortName">read_address_oe[63:0]</obj_property>
+      <obj_property name="ObjectShortName">read_address_oe[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/trc" type="array">
+      <obj_property name="ElementShortName">trc[63:0]</obj_property>
+      <obj_property name="ObjectShortName">trc[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/taa" type="array">
+      <obj_property name="ElementShortName">taa[63:0]</obj_property>
+      <obj_property name="ObjectShortName">taa[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tace" type="array">
+      <obj_property name="ElementShortName">tace[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tace[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/toe" type="array">
+      <obj_property name="ElementShortName">toe[63:0]</obj_property>
+      <obj_property name="ObjectShortName">toe[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/toh" type="array">
+      <obj_property name="ElementShortName">toh[63:0]</obj_property>
+      <obj_property name="ObjectShortName">toh[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tclz" type="array">
+      <obj_property name="ElementShortName">tclz[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tclz[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tchz" type="array">
+      <obj_property name="ElementShortName">tchz[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tchz[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tolz" type="array">
+      <obj_property name="ElementShortName">tolz[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tolz[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tohz" type="array">
+      <obj_property name="ElementShortName">tohz[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tohz[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tba" type="array">
+      <obj_property name="ElementShortName">tba[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tba[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tblz" type="array">
+      <obj_property name="ElementShortName">tblz[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tblz[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tbhz" type="array">
+      <obj_property name="ElementShortName">tbhz[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tbhz[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tpu" type="array">
+      <obj_property name="ElementShortName">tpu[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tpu[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/tpd" type="array">
+      <obj_property name="ElementShortName">tpd[63:0]</obj_property>
+      <obj_property name="ObjectShortName">tpd[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/read_address_time" type="array">
+      <obj_property name="ElementShortName">read_address_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">read_address_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/read_CE_n_start_time" type="array">
+      <obj_property name="ElementShortName">read_CE_n_start_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">read_CE_n_start_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/read_WE_n_start_time" type="array">
+      <obj_property name="ElementShortName">read_WE_n_start_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">read_WE_n_start_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/read_OE_n_start_time" type="array">
+      <obj_property name="ElementShortName">read_OE_n_start_time[63:0]</obj_property>
+      <obj_property name="ObjectShortName">read_OE_n_start_time[63:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/activate_cebar" type="logic">
+      <obj_property name="ElementShortName">activate_cebar</obj_property>
+      <obj_property name="ObjectShortName">activate_cebar</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/activate_webar" type="logic">
+      <obj_property name="ElementShortName">activate_webar</obj_property>
+      <obj_property name="ObjectShortName">activate_webar</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/activate_wecebar" type="logic">
+      <obj_property name="ElementShortName">activate_wecebar</obj_property>
+      <obj_property name="ObjectShortName">activate_wecebar</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/initiate_write1" type="logic">
+      <obj_property name="ElementShortName">initiate_write1</obj_property>
+      <obj_property name="ObjectShortName">initiate_write1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/initiate_write2" type="logic">
+      <obj_property name="ElementShortName">initiate_write2</obj_property>
+      <obj_property name="ObjectShortName">initiate_write2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/initiate_write3" type="logic">
+      <obj_property name="ElementShortName">initiate_write3</obj_property>
+      <obj_property name="ObjectShortName">initiate_write3</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/WE_dly" type="logic">
+      <obj_property name="ElementShortName">WE_dly</obj_property>
+      <obj_property name="ObjectShortName">WE_dly</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/Address_write1" type="array">
+      <obj_property name="ElementShortName">Address_write1[19:0]</obj_property>
+      <obj_property name="ObjectShortName">Address_write1[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/Address_write2" type="array">
+      <obj_property name="ElementShortName">Address_write2[19:0]</obj_property>
+      <obj_property name="ObjectShortName">Address_write2[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/dataIO1" type="array">
+      <obj_property name="ElementShortName">dataIO1[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dataIO1[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/data_read" type="array">
+      <obj_property name="ElementShortName">data_read[15:0]</obj_property>
+      <obj_property name="ObjectShortName">data_read[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/Address_read1" type="array">
+      <obj_property name="ElementShortName">Address_read1[19:0]</obj_property>
+      <obj_property name="ObjectShortName">Address_read1[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/Address_read2" type="array">
+      <obj_property name="ElementShortName">Address_read2[19:0]</obj_property>
+      <obj_property name="ObjectShortName">Address_read2[19:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/initiate_read1" type="logic">
+      <obj_property name="ElementShortName">initiate_read1</obj_property>
+      <obj_property name="ObjectShortName">initiate_read1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/initiate_read2" type="logic">
+      <obj_property name="ElementShortName">initiate_read2</obj_property>
+      <obj_property name="ObjectShortName">initiate_read2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/base1/DataIO" type="array">
+      <obj_property name="ElementShortName">DataIO[15:0]</obj_property>
+      <obj_property name="ObjectShortName">DataIO[15:0]</obj_property>
    </wvobject>
 </wave_config>

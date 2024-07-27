@@ -40,6 +40,7 @@ module ex_state(
     assign mem_addr_o = reg1_i + {{16{inst_i[15]}}, inst_i[15:0]};
     assign reg2_i_sign = (aluop_i == `SUBU_OP) ? (~reg2_i) + 1 : reg2_i;
     assign result_sum = reg1_i + reg2_i_sign;
+    assign result_mul = 32'd0;
 
     // �߼�����
     always @(*) begin
@@ -67,11 +68,11 @@ module ex_state(
     assign opdata1_mult = (aluop_i == `MUL_OP) ? reg1_i : 32'b0;
     assign opdata2_mult = (aluop_i == `MUL_OP) ? reg2_i : 32'b0;
 
-    mult_gen_1 mult_gen_1(
-        .A(opdata1_mult),
-        .B(opdata2_mult),
-        .P(result_mul)
-    );
+    // mult_gen_1 mult_gen_1(
+    //     .A(opdata1_mult),
+    //     .B(opdata2_mult),
+    //     .P(result_mul)
+    // );
 
     always @(*) begin
         mulres_32 = (rst == `RstEnable) ? 32'd0 :
