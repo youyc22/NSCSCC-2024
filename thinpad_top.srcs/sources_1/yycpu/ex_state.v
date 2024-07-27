@@ -29,7 +29,7 @@ module ex_state(
     output reg                              stall_from_ex 
 );
     // �ڲ��źŶ���
-    reg [31:0] logicout, shiftres, arithmeticres, mulres_32;
+    reg [31:0]  logicout, shiftres, arithmeticres, mulres_32;
     wire [31:0] result_sum, result_mul;
     wire [31:0] opdata1_mult, opdata2_mult;
     wire [31:0] reg2_i_sign;

@@ -59,7 +59,7 @@
 `define  SB  6'b101000
 
 `define  NOP 6'b000000
-`define  SPECIAL_INST 6'b000000
+`define  R_INST 6'b000000
 
 //AluOp
 //�߼�

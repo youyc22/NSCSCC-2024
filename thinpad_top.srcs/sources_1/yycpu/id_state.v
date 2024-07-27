@@ -3,8 +3,8 @@
 module id_state(
 	input wire									rst,
 	//??if??ν???????
-	input wire[31:0]					        pc_i,
-	input wire[31:0]          				    inst_i,
+	input wire[31:0]					        id_pc_i,
+	input wire[31:0]          				    id_inst_i,
 	
 	//????Load???
 	input wire[4:0]								ex_aluop_i,
@@ -46,23 +46,23 @@ module id_state(
 	output wire        							stall_from_id    
 );
 
-	wire[5:0] op = inst_i[31:26];
-	wire[4:0] rs = inst_i[25:21];
-	wire[4:0] rt = inst_i[20:16];
-	wire[4:0] rd = inst_i[15:11];
-	wire[4:0] shamt = inst_i[10:6];
-	wire[5:0] func = inst_i[5:0];
-    wire pre_inst_is_load;
-	wire[31:0] pc_plus_8 = pc_i + 8;
-	wire[31:0] pc_plus_4 = pc_i + 4;
-	wire[31:0] branch_addr = pc_plus_4 + {{14{inst_i[15]}}, inst_i[15:0], 2'b00 };
+	wire[5:0] 	op = id_inst_i[31:26];
+	wire[4:0] 	rs = id_inst_i[25:21];
+	wire[4:0] 	rt = id_inst_i[20:16];
+	wire[4:0] 	rd = id_inst_i[15:11];
+	wire[4:0] 	shamt = id_inst_i[10:6];
+	wire[5:0] 	func = id_inst_i[5:0];
+    wire 		pre_inst_is_load;
+	wire[31:0] 	pc_plus_8 = id_pc_i + 8;
+	wire[31:0] 	pc_plus_4 = id_pc_i + 4;
+	wire[31:0] 	branch_addr = pc_plus_4 + {{14{id_inst_i[15]}}, id_inst_i[15:0], 2'b00 };
 
     //????load???
-    reg stall_for_reg1_load, stall_for_reg2_load;
-	reg[31:0] imm_o;
+    reg 		stall_for_reg1_load, stall_for_reg2_load;
+	reg[31:0] 	imm_o;
 	
     //ls
-    assign inst_o = inst_i;
+    assign inst_o = id_inst_i;
     assign stall_from_id = stall_for_reg1_load | stall_for_reg2_load;
     assign pre_inst_is_load = (ex_aluop_i ==  `LW_OP)||(ex_aluop_i ==  `LB_OP)  ? 1'b1 : 1'b0;
       
@@ -94,7 +94,7 @@ module id_state(
 			branch_target_o <= `ZeroWord;
 			branch_flag_o <= `NotBranch;			
 		case (op)
-		 `SPECIAL_INST:	begin
+		 `R_INST:	begin
 			case (func)
 			`SRA:  		begin
 				wreg_o <= `WriteEnable;    
@@ -192,7 +192,7 @@ module id_state(
 			alusel_o <=  `RES_LOGIC; 
 			reg1_read_o <= 1'b1;	
 			reg2_read_o <= 1'b0;	  	
-			imm_o <= {16'h0, inst_i[15:0]};		
+			imm_o <= {16'h0, id_inst_i[15:0]};		
 			waddr_o <= rt;
 			end 	
 		`LUI:			    begin
@@ -201,7 +201,7 @@ module id_state(
 			alusel_o <=  `RES_LOGIC; 
 			reg1_read_o <= 1'b1;	
 			reg2_read_o <= 1'b0;	  	
-			imm_o <= {inst_i[15:0], 16'h0};		
+			imm_o <= {id_inst_i[15:0], 16'h0};		
 			waddr_o <= rt;		  		
 			end	
 		`ANDI:				begin
@@ -210,7 +210,7 @@ module id_state(
 			alusel_o <=  `RES_LOGIC;	
 			reg1_read_o <= 1'b1;	
 			reg2_read_o <= 1'b0;	  	
-			imm_o <= {16'h0, inst_i[15:0]};		
+			imm_o <= {16'h0, id_inst_i[15:0]};		
 			waddr_o <= rt;		  		
 			end	 	
 		`XORI:				begin
@@ -219,7 +219,7 @@ module id_state(
 			alusel_o <=  `RES_LOGIC;	
 			reg1_read_o <= 1'b1;	
 			reg2_read_o <= 1'b0;	  	
-			imm_o <= {16'h0, inst_i[15:0]};		
+			imm_o <= {16'h0, id_inst_i[15:0]};		
 			waddr_o <= rt;		  		
 			end	 	
 		`ADDIU,`ADDI:				begin
@@ -228,7 +228,7 @@ module id_state(
 			alusel_o <=  `RES_ARITHMETIC; 
 			reg1_read_o <= 1'b1;	
 			reg2_read_o <= 1'b0;	  	
-			imm_o <= {{16{inst_i[15]}}, inst_i[15:0]};		
+			imm_o <= {{16{id_inst_i[15]}}, id_inst_i[15:0]};		
 			waddr_o <= rt;		  		
 			end
 		`J:					begin
@@ -238,7 +238,7 @@ module id_state(
 			reg1_read_o <= 1'b0;	
 			reg2_read_o <= 1'b0;
 			link_addr_o <= `ZeroWord;
-			branch_target_o <= {pc_plus_4[31:28], inst_i[25:0], 2'b00};
+			branch_target_o <= {pc_plus_4[31:28], id_inst_i[25:0], 2'b00};
 			branch_flag_o <= `Branch;  		
 			end
 		`JAL:				begin
@@ -249,7 +249,7 @@ module id_state(
 			reg2_read_o <= 1'b0;
 			waddr_o <= 5'b11111;	
 			link_addr_o <= pc_plus_8 ;
-			branch_target_o <= {pc_plus_4[31:28], inst_i[25:0], 2'b00};
+			branch_target_o <= {pc_plus_4[31:28], id_inst_i[25:0], 2'b00};
 			branch_flag_o <= `Branch;	  		
 			end
 		`BEQ:				begin

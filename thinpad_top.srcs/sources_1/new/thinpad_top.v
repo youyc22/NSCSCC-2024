@@ -53,38 +53,34 @@ module thinpad_top(
     output wire video_de           //��������Ч�źţ���������������
 );
 
-/* =========== Demo code begin =========== */
+    wire locked, clk1;
+    reg  reset1;
 
-// PLL��Ƶʾ��
-wire locked, clk1;
-reg reset1;
+    pll_example clock_gen 
+    (
+        .clk_in1(clk_50M),
+        .clk_out1(clk1),
+        .reset(reset_btn),
+        .locked(locked)
+    );
 
-pll_example clock_gen 
- (
-  .clk_in1(clk_50M),
-  .clk_out1(clk1),
-  .reset(reset_btn),
-  .locked(locked)
- );
+    always @(posedge clk1 or negedge locked) begin
+        if (~locked) reset1 <= 1;
+        else         reset1 <= 0;
+    end
 
-always @(posedge clk1 or negedge locked) begin
-    if (~locked) reset1 <= 1;
-    else         reset1 <= 0;
-end
-
-wire [31:0]  rom_addr_o;
-wire         rom_ce_n;
-wire [31:0]  inst_i;
-wire [31:0]  serial_i;
-wire [31:0]  ram_data_i;
-wire [31:0]  ram_addr_o;
-wire [31:0]  ram_data_o;
-wire         ram_we_n;
-wire         ram_oe_n;
-wire         ram_ce_n;
-wire [3:0]   ram_be_n;
-wire         stall_from_bus;
-
+    wire [31:0]  rom_addr_o;
+    wire         rom_ce_n;
+    wire [31:0]  inst_i;
+    wire [31:0]  serial_i;
+    wire [31:0]  ram_data_i;
+    wire [31:0]  ram_addr_o;
+    wire [31:0]  ram_data_o;
+    wire         ram_we_n;
+    wire         ram_oe_n;
+    wire         ram_ce_n;
+    wire [3:0]   ram_be_n;
+    wire         stall_from_bus;
 
 yycpu u_yycpu(
     .clk            (clk1),
@@ -107,6 +103,7 @@ yycpu u_yycpu(
 uart_controller u_uart(
     .clk            (clk1),
     .rst            (reset1),
+
     .txd            (txd),
     .rxd            (rxd),
     .mem_data_i     (ram_data_o),
@@ -149,41 +146,5 @@ sram_controller u_sram(
 	.stall_inst         (stall_from_bus),
     .serial_i           (serial_i)
 );
-
-
-// bus_ctrl u_bus(
-// 	.clk                (clk),  
-// 	.rst                (rst),
-
-// 	.inst_addr_i        (rom_addr_o),
-// 	.rom_ce_n_i         (rom_ce_n),
-// 	.inst_o             (inst_i),
-
-// 	.ram_data_o         (ram_data_i),
-// 	.mem_addr_i         (ram_addr_o),
-// 	.mem_data_i         (ram_data_o),
-//     .mem_oe_n           (ram_oe_n),
-// 	.mem_we_n           (ram_we_n),
-// 	.mem_be_n          (ram_be_n),
-// 	.mem_ce_n           (ram_ce_n),
-
-// 	.base_ram_data      (base_ram_data),
-// 	.base_ram_addr      (base_ram_addr),
-// 	.base_ram_be_n      (base_ram_be_n),
-// 	.base_ram_ce_n      (base_ram_ce_n),
-// 	.base_ram_oe_n      (base_ram_oe_n),
-// 	.base_ram_we_n      (base_ram_we_n),
-
-// 	.ext_ram_data       (ext_ram_data),
-// 	.ext_ram_addr       (ext_ram_addr),
-// 	.ext_ram_be_n       (ext_ram_be_n),
-// 	.ext_ram_ce_n       (ext_ram_ce_n),
-// 	.ext_ram_oe_n       (ext_ram_oe_n),
-// 	.ext_ram_we_n       (ext_ram_we_n),
-	
-// 	.stall_from_bus     (stall_from_bus),
-// 	.txd                (txd),
-// 	.rxd                (rxd)
-// );
 
 endmodule

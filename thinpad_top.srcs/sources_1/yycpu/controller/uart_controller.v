@@ -1,15 +1,15 @@
 module uart_controller (
-    input wire clk,
-    input wire rst,
+    input wire          clk,
+    input wire          rst,
     
-    input wire [31:0] mem_data_i,
-    input wire [31:0] mem_addr_i,
-    input wire mem_oe_n,
-    input wire mem_we_n,
+    input wire [31:0]   mem_data_i,
+    input wire [31:0]   mem_addr_i,
+    input wire          mem_oe_n,
+    input wire          mem_we_n,
     
-    output reg [31:0] serial_o,
-    output wire txd,
-    input wire rxd
+    output reg [31:0]   serial_o,
+    output wire         txd,
+    input  wire         rxd
 );
 
     parameter clk_freq = 113*1000000;

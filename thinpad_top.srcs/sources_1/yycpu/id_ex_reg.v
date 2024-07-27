@@ -25,7 +25,7 @@ module id_ex_reg(
     output reg                     ex_wreg_o,
 
     output reg[31:0]               ex_link_address_o,
-    output reg [31:0]              ex_inst_o//指令
+    output reg[31:0]               ex_inst_o//指令
 );
 
     always @ (posedge clk) begin
