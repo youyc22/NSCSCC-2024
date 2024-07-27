@@ -18,7 +18,7 @@ wire        [63:0]   Ssum       [16:0];   // 17个64位部分和
 // 初始化变量
 assign mulX         = mul1;
 assign mulX_2       = mulX<<1;
-assign mulX_com     = ~mulX;
+assign mulX_com     = ~ mulX;
 assign mulX_com_2   = ~ (mulX<<1);
 assign mulY         = mul2;
 

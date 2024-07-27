@@ -14,25 +14,23 @@ module icache_direct(
     input wire [31:0]                           inst_i             // 从 SRAM 读取的指令
 
 );
-
     // 缓存参数定义
     parameter Cache_Num = 32;        // 缓存行数
     parameter Tag = 15;              // 标记位宽
     parameter Cache_Index = 5;       // 索引位宽
-    parameter Block_Offset = 2;      // 块内偏移位宽（未使用）
+    parameter Block_Offset = 2;      // 块内偏移位宽
     
     // 状态机状态定义
     parameter IDLE = 0;              // 空闲状态
     parameter READ_SRAM = 1;         // 读取 SRAM 状态
 
     // 缓存存储单元
-    reg[31:0] cache_mem[0:Cache_Num-1];     // 缓存数据存储
-    reg[Tag-1:0] cache_tag[0:Cache_Num-1];  // 缓存标记存储
-    reg[Cache_Num-1:0] cache_valid;         // 缓存有效位
-    
-    // 状态机相关寄存器
-    reg[1:0]  state, next_state;
-    reg finish_read;                        // 读取完成标志
+    reg[31:0]           cache_mem[0:Cache_Num-1];   // 缓存数据存储
+    reg[Tag-1:0]        cache_tag[0:Cache_Num-1];   // 缓存标记存储
+    reg[Cache_Num-1:0]  cache_valid;                // 缓存有效位
+
+    // 状态机状态寄存器
+    reg state, next_state, finish_read;
 
     integer i;  // 用于初始化的循环变量
 
@@ -40,7 +38,7 @@ module icache_direct(
     wire [Tag-1:0] ram_tag_i = rom_addr_i[21:7];           // 从地址中提取标记
     wire [Cache_Index-1:0] ram_cache_i = rom_addr_i[6:2];  // 从地址中提取索引
     wire hit = (state==IDLE) ? cache_valid[ram_cache_i] && (cache_tag[ram_cache_i]==ram_tag_i) : 1'b0;  // 命中条件：空闲状态 + 有效 + 标记匹配
-    wire rst_n = ~rst;  // 复位信号取反
+    wire rst_n = ~rst;                      // 复位信号取反
     
     // 状态机时序逻辑
     always@(posedge clk or posedge rst) begin
@@ -55,7 +53,7 @@ module icache_direct(
     always@(*) begin
         if(rst) begin
             finish_read = 1'b0;
-            inst_o = `ZeroWord;       // 复位时输出全0
+            inst_o = `ZeroWord;             // 复位时输出全0
         end else begin
             case(state)
             IDLE: begin
@@ -63,16 +61,16 @@ module icache_direct(
                 if(hit && ~stall_from_bus) begin
                     inst_o = cache_mem[ram_cache_i];  // 命中时直接从缓存输出
                 end else begin
-                    inst_o = `ZeroWord;  // 未命中时输出全0
+                    inst_o = `ZeroWord;     // 未命中时输出全0
                 end
             end
             READ_SRAM: begin       
-                inst_o = inst_i;       // 从 SRAM 读取的指令直接输出
-                finish_read = 1'b1;    // 标记读取完成
+                inst_o = inst_i;            // 从 SRAM 读取的指令直接输出
+                finish_read = 1'b1;         // 标记读取完成
             end
             default: begin 
                 finish_read = 1'b0;
-                inst_o = 32'hzzzzzzzz;  // 默认输出高阻态
+                inst_o = 32'hzzzzzzzz;      // 默认输出高阻态
             end
             endcase
         end
@@ -80,8 +78,7 @@ module icache_direct(
 
     // 缓存更新逻辑
     always@(posedge clk or posedge rst_n) begin
-        if(!rst_n) begin
-            // 复位时初始化缓存
+        if(!rst_n) begin      // 复位时初始化缓存
             for(i=0; i < 32; i=i+1) begin
                 cache_mem[i] <= 32'b0;
                 cache_tag[i] <= 15'b0;
@@ -94,8 +91,7 @@ module icache_direct(
                 cache_valid[ram_cache_i] <= 1'b1;        // 设置有效位
                 cache_tag[ram_cache_i] <= ram_tag_i;     // 更新标记
             end
-            default: begin 
-                // 保持缓存状态不变
+            default: begin    // 保持缓存状态不变
                 cache_mem[ram_cache_i] <= cache_mem[ram_cache_i];
                 cache_valid[ram_cache_i] <= cache_valid[ram_cache_i];
                 cache_tag[ram_cache_i] <= cache_tag[ram_cache_i];
