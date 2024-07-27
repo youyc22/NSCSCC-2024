@@ -29,25 +29,22 @@ module ex_state(
     output reg                              stall_from_ex 
 );
     // �ڲ��źŶ���
-    reg [31:0]  logicout, shiftres, arithmeticres, mulres_32;
+    reg  [31:0] logicout, shiftres, arithmeticres, mulres_32;
     wire [31:0] result_sum, result_mul;
     wire [31:0] opdata1_mult, opdata2_mult;
     wire [31:0] reg2_i_sign;
-    //wire overflow_flag;
 
     // �ô���������ֵ
     assign aluop_o = aluop_i;
-    assign reg2_o = reg2_i;
+    assign reg2_o  = reg2_i;
     assign mem_addr_o = reg1_i + {{16{inst_i[15]}}, inst_i[15:0]};
     assign reg2_i_sign = (aluop_i == `SUBU_OP) ? (~reg2_i) + 1 : reg2_i;
     assign result_sum = reg1_i + reg2_i_sign;
-    // assign overflow_flag = ((!reg1_i[31] && !reg2_i_sign[31]) && result_sum[31]) || //正数加�?�数得负�?
-    //                         ((reg1_i[31] && reg2_i_sign[31]) && (!result_sum[31])); //负数加负数得正数
 
     // �߼�����
     always @(*) begin
         logicout = (rst == `RstEnable) ? `ZeroWord :
-			(aluop_i ==  `OR_OP) ? (reg1_i | reg2_i) :
+			(aluop_i ==  `OR_OP)  ? (reg1_i | reg2_i) :
 			(aluop_i ==  `AND_OP) ? (reg1_i & reg2_i) :
 			(aluop_i ==  `XOR_OP) ? (reg1_i ^ reg2_i) : `ZeroWord;
     end
@@ -57,14 +54,14 @@ module ex_state(
         shiftres = (rst == `RstEnable) ? `ZeroWord :
 			(aluop_i ==  `SLL_OP) ? (reg2_i << reg1_i[4:0]) :
 			(aluop_i ==  `SRL_OP) ? (reg2_i >> reg1_i[4:0]) :
-			(aluop_i ==  `SRA_OP) ? (({32{reg2_i[31]}} << (6'd32-{1'b0, reg1_i[4:0]})) | reg2_i >> reg1_i[4:0]) : `ZeroWord;
+			(aluop_i ==  `SRA_OP) ? (reg2_i >>> reg1_i[4:0]) : `ZeroWord;
     end
 
     // ��������
     always @(*) begin
         arithmeticres = (rst == `RstEnable) ? `ZeroWord :
 			(aluop_i ==  `ADDU_OP || aluop_i == `SUBU_OP) ? result_sum :
-			(aluop_i ==  `SLT_OP) ? (($signed(reg1_i) < $signed(reg2_i)) ? 32'b1 : 32'b0) : `ZeroWord;
+			(aluop_i ==  `SLT_OP) ? ($signed(reg1_i) < $signed(reg2_i)) : `ZeroWord;
 	end
 
     assign opdata1_mult = (aluop_i == `MUL_OP) ? reg1_i : 32'b0;

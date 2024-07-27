@@ -20,15 +20,11 @@ module mem_controller(
 
     // 状态机定义
     parameter IDLE = 0;         // 空闲状态
-    parameter READ_SRAM = 1;    // 读 SRAM 状态
-    parameter WRITE_SRAM = 2;   // 写 SRAM 状态
-
-    reg[1:0] state, next_state;
-    reg finish_read;  // 读完成标志
-    reg finish_write; // 写完成标志
+    parameter BUSY = 1;         // 忙状态
+    reg state, next_state, finish;
 
     // 处理串口请求
-    wire uart_req = (~mem_ce_n_i & ((mem_addr_i == 32'hbfd003f8)|(mem_addr_i == 32'hbfd003fc)))?1'b1:1'b0;
+    wire uart = ~mem_ce_n_i & ((mem_addr_i == 32'hbfd003f8)|(mem_addr_i == 32'hbfd003fc));
 
     // 状态机时序逻辑
     always@(posedge clk, posedge rst) begin
@@ -42,32 +38,20 @@ module mem_controller(
     // 主要的读写操作逻辑
     always@(*) begin
         if(rst) begin
-            finish_read = 1'b0;
-            finish_write = 1'b0;
+            finish = 1'b0;
             ram_data_o = 32'b0;
         end else begin
             case(state)
-            IDLE: begin
-                finish_read = 1'b0;
-                finish_write = 1'b0;
-                if(uart_req || ~mem_oe_n_i) begin
-                    // 串口请求或读请求时，直接从 SRAM 读取数据
-                    ram_data_o = ram_data_i;                
-                end else begin
-                    ram_data_o = 32'b0;
-                end
+            IDLE:       begin
+                finish = 1'b0;
+                ram_data_o = (uart || ~mem_oe_n_i) ? ram_data_i : 32'b0;
             end
-            READ_SRAM: begin      
-                // 从 SRAM 读取数据
-                ram_data_o = ram_data_i;
-                finish_read = 1'b1;         
+            BUSY:       begin
+                finish = 1'b1;
+                ram_data_o = (~mem_oe_n_i) ? ram_data_i : 32'b0;
             end
-            WRITE_SRAM: begin    
-                // 写入 SRAM
-                ram_data_o = 32'b0;           
-                finish_write = 1'b1;   
+            default:    begin 
             end
-            default: begin end
             endcase
         end
     end
@@ -80,34 +64,22 @@ module mem_controller(
         end else begin
             case(state)
                 IDLE: begin
-                    if(~mem_oe_n_i && ~mem_ce_n_i && !uart_req) begin
+                    if((~mem_oe_n_i || ~mem_we_n_i) && ~mem_ce_n_i && !uart) begin
                         // 读请求，进入读 SRAM 状态
-                        next_state = READ_SRAM;
-                        stall_from_mem = 1'b1;
-                    end else if(~mem_we_n_i && ~mem_ce_n_i && !uart_req) begin
-                        // 写请求，进入写 SRAM 状态
-                        next_state = WRITE_SRAM;
+                        next_state = BUSY;
                         stall_from_mem = 1'b1;
                     end else begin
                         next_state = IDLE;
                         stall_from_mem = 1'b0;
                     end
                 end
-                READ_SRAM: begin
-                    if(finish_read) begin
+                BUSY: begin
+                    if(finish) begin
                         next_state = IDLE;
                         stall_from_mem = 1'b0;
                     end else begin
-                        next_state = READ_SRAM;  
+                        next_state = BUSY;  
                     end 
-                end
-                WRITE_SRAM: begin
-                    if(finish_write) begin
-                        next_state = IDLE;
-                        stall_from_mem = 1'b0;
-                    end else begin
-                        next_state = WRITE_SRAM;
-                    end
                 end
                 default: next_state = IDLE;
             endcase

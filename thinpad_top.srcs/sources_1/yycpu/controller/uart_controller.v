@@ -23,7 +23,9 @@ module uart_controller (
     wire TxD_busy;
     wire RxD_clear;
     wire is_SerialState = (mem_addr_i == 32'hBFD003FC);
-    wire is_SerialData = (mem_addr_i == 32'hBFD003F8);
+    wire is_SerialData  = (mem_addr_i == 32'hBFD003F8);
+
+    assign RxD_clear = RxD_data_ready && is_SerialData && ~mem_oe_n;
 
     async_receiver #(.ClkFrequency(clk_freq),.Baud(baud))   
         ext_uart_r(
@@ -58,7 +60,5 @@ module uart_controller (
             end
         end
     end
-
-    assign RxD_clear = RxD_data_ready && is_SerialData && ~mem_oe_n;
 
 endmodule
