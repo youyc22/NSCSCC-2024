@@ -18,7 +18,6 @@ parameter SET_NUM = 16;     //
 parameter WAY_NUM = 2;      //两路组相联
 parameter TAG = 16;
 parameter SET_INDEX = 4;
-parameter BLOCK_OFFSET = 2;
 
 reg [31:0] cache_mem[0:SET_NUM-1][0:WAY_NUM-1];
 reg [TAG-1:0] cache_tag[0:SET_NUM-1][0:WAY_NUM-1];

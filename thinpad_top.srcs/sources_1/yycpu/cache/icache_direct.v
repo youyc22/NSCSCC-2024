@@ -64,7 +64,7 @@ module icache_direct(
             end
             BUSY: begin       
                 inst_o = inst_i;            // 从 SRAM 读取的指令直接输出
-                finish = 1'b1;         // 标记读取完成
+                finish = 1'b1;              // 标记读取完成
             end
             default: begin 
                 finish = 1'b0;

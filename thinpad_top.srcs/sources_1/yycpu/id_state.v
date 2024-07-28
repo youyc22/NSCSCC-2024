@@ -52,19 +52,19 @@ module id_state(
 	wire[4:0] 	rd = id_inst_i[15:11];
 	wire[4:0] 	shamt = id_inst_i[10:6];
 	wire[5:0] 	func = id_inst_i[5:0];
-    wire 		pre_inst_is_load;
+    wire 		is_inst_load;
 	wire[31:0] 	pc_plus_8 = id_pc_i + 8;
 	wire[31:0] 	pc_plus_4 = id_pc_i + 4;
 	wire[31:0] 	branch_addr = pc_plus_4 + {{14{id_inst_i[15]}}, id_inst_i[15:0], 2'b00 };
 
     //????load???
-    reg 		stall_for_reg1_load, stall_for_reg2_load;
+    reg 		stall_for_reg1, stall_for_reg2;
 	reg[31:0] 	imm_o;
 	
     //ls
     assign inst_o = id_inst_i;
-    assign stall_from_id = stall_for_reg1_load | stall_for_reg2_load;
-    assign pre_inst_is_load = (ex_aluop_i ==  `LW_OP)||(ex_aluop_i ==  `LB_OP)  ? 1'b1 : 1'b0;
+    assign stall_from_id = stall_for_reg1 | stall_for_reg2;
+    assign is_inst_load = (ex_aluop_i ==  `LW_OP) | (ex_aluop_i ==  `LB_OP);
       
 	always @ (*) begin	
 		if (rst == `RstEnable) begin
@@ -338,11 +338,11 @@ module id_state(
 	end         
 	
 	always @ (*) begin
-		stall_for_reg1_load <= `NoStop;
+		stall_for_reg1 <= `NoStop;
 		if(rst == `RstEnable) begin
 			r1_data_o <= `ZeroWord;
-		end else if((pre_inst_is_load == 1'b1) && (ex_waddr_i == r1_addr_o) && (re1_o == 1'b1)) begin //load
-		  	stall_for_reg1_load <= `Stop;	
+		end else if((is_inst_load == 1'b1) && (ex_waddr_i == r1_addr_o) && (re1_o == 1'b1)) begin //load
+		  	stall_for_reg1 <= `Stop;	
         end else if((re1_o == 1'b1) && (ex_we_i == 1'b1) && (ex_waddr_i == r1_addr_o) && (ex_waddr_i != 5'b0)) begin //ex??????????
         	r1_data_o <= ex_wdata_i; 
       	end else if((re1_o == 1'b1) && (mem_we_i == 1'b1) && (mem_waddr_i == r1_addr_o) && (mem_waddr_i != 5'b0)) begin //mem??????????
@@ -357,11 +357,11 @@ module id_state(
 	end
 	
 	always @ (*) begin
-		stall_for_reg2_load <= `NoStop;
+		stall_for_reg2 <= `NoStop;
 		if(rst == `RstEnable) begin
 			r2_data_o <= `ZeroWord;
-		end else if(pre_inst_is_load == 1'b1 && ex_waddr_i == r2_addr_o && re2_o == 1'b1 ) begin
-		  	stall_for_reg2_load <= `Stop;	
+		end else if(is_inst_load == 1'b1 && ex_waddr_i == r2_addr_o && re2_o == 1'b1 ) begin
+		  	stall_for_reg2 <= `Stop;	
 		end else if((re2_o == 1'b1) && (ex_we_i == 1'b1) && (ex_waddr_i == r2_addr_o) && (ex_waddr_i != 5'b0)) begin
 			r2_data_o <= ex_wdata_i; 
 		end else if((re2_o == 1'b1) && (mem_we_i == 1'b1) && (mem_waddr_i == r2_addr_o) && (mem_waddr_i != 5'b0)) begin

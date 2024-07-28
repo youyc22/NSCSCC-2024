@@ -18,7 +18,7 @@ module ex_mem_reg(
     output reg                 mem_we_o,
     output reg[31:0]           mem_wdata_o,
     output reg[4:0]            mem_aluop_o,
-    output reg[31:0]           mem_mem_addr_o,
+    output reg[31:0]           mem_addr_o,
     output reg[31:0]           mem_reg2_o
 );
 
@@ -28,14 +28,14 @@ module ex_mem_reg(
             mem_we_o     <= `WriteDisable;
             mem_wdata_o    <= `ZeroWord;
             mem_aluop_o    <= `NOP_OP;
-            mem_mem_addr_o <= `ZeroWord;
+            mem_addr_o <= `ZeroWord;
             mem_reg2_o     <= `ZeroWord;
         end else if(stall[3] == `NoStop) begin
             mem_waddr_o       <= ex_waddr_i;
             mem_we_o     <= ex_we_i;
             mem_wdata_o    <= ex_wdata_i;
             mem_aluop_o    <= ex_aluop_i;
-            mem_mem_addr_o <= ex_mem_addr_i;
+            mem_addr_o <= ex_mem_addr_i;
             mem_reg2_o     <= ex_reg2_i;
         end
     end

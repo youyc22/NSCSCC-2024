@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="tb_time_synth.wdb" id="1">
+      <db_ref path="tb_behav.wdb" id="1">
          <top_modules>
             <top_module name="glbl" />
             <top_module name="tb" />
@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="2221975fs"></ZoomStartTime>
-      <ZoomEndTime time="2386476fs"></ZoomEndTime>
-      <Cursor1Time time="2359059fs"></Cursor1Time>
+      <ZoomStartTime time="848540fs"></ZoomStartTime>
+      <ZoomEndTime time="1030293fs"></ZoomEndTime>
+      <Cursor1Time time="1000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="237"></NameColumnWidth>
-      <ValueColumnWidth column_width="137"></ValueColumnWidth>
+      <ValueColumnWidth column_width="129"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="103" />
+   <WVObjectSize size="104" />
    <wvobject fp_name="/tb/clk_50M" type="logic">
       <obj_property name="ElementShortName">clk_50M</obj_property>
       <obj_property name="ObjectShortName">clk_50M</obj_property>
@@ -119,6 +119,10 @@
    <wvobject fp_name="/tb/ext_ram_we_n" type="logic">
       <obj_property name="ElementShortName">ext_ram_we_n</obj_property>
       <obj_property name="ObjectShortName">ext_ram_we_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/dut/u_yycpu/u_icache/hit" type="logic">
+      <obj_property name="ElementShortName">hit</obj_property>
+      <obj_property name="ObjectShortName">hit</obj_property>
    </wvobject>
    <wvobject fp_name="/tb/flash_a" type="array">
       <obj_property name="ElementShortName">flash_a[22:0]</obj_property>
