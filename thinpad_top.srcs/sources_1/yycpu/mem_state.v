@@ -2,8 +2,8 @@ module mem_state(
 	input wire						rst,
 	
 	//����ִ�н׶ε���Ϣ	
-	input wire[4:0]       			wd_i,
-	input wire                    	wreg_i,
+	input wire[4:0]       			waddr_i,
+	input wire                    	we_i,
 	input wire[31:0]				wdata_i,
 
 	//�ô�
@@ -13,8 +13,8 @@ module mem_state(
 	input wire[31:0]          		mem_data_i,
 	
 	//�͵���д�׶ε���Ϣ
-	output reg[4:0]      			wd_o,
-	output reg                   	wreg_o,
+	output reg[4:0]      			waddr_o,
+	output reg                   	we_o,
 	output reg[31:0]			 	wdata_o,
 	
 	//�ô�
@@ -28,8 +28,8 @@ module mem_state(
 	
 	always @ (*) begin
 		if(rst == `RstEnable) begin
-			wd_o <= 5'b00000;
-			wreg_o <= `WriteDisable;
+			waddr_o <= 5'b00000;
+			we_o <= `WriteDisable;
 			wdata_o <= `ZeroWord;
 			mem_we_n_o <= 1'b1;
 			mem_oe_n_o <= 1'b1;
@@ -38,8 +38,8 @@ module mem_state(
 			mem_data_o <= `ZeroWord;
 			mem_ce_n_o <= 1'b1;	
 		end else begin
-		  	wd_o <= wd_i;
-			wreg_o <= wreg_i;
+		  	waddr_o <= waddr_i;
+			we_o <= we_i;
 			wdata_o <= wdata_i;
 			mem_we_n_o <= 1'b1;
 			mem_oe_n_o <= 1'b1;

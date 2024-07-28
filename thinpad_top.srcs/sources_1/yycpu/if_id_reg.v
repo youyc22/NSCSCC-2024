@@ -8,9 +8,9 @@ module if_id_reg(
 	input wire[5:0]                            		stall,
 
 	input wire[31:0]								if_pc_i,		//if�׶ε�pc
-	input wire[31:0]          						if_inst_i,	//if�׶ε�ָ??
+	input wire[31:0]          						if_inst_i,		//if�׶ε�ָ??
 	output reg[31:0]      							id_pc_o,		//id�׶ε�pc
-	output reg[31:0]          						id_inst_o  	//id�׶ε�ָ??
+	output reg[31:0]          						id_inst_o  		//id�׶ε�ָ??
 
 );
 

@@ -9,16 +9,16 @@ module ex_state(
     input wire [2:0]                        alusel_i,
     input wire [31:0]                       reg1_i,
     input wire [31:0]                       reg2_i,
-    input wire [4:0]                        wd_i,
-    input wire                              wreg_i,
+    input wire [4:0]                        waddr_i,
+    input wire                              we_i,
 
     // �ӳٲ����?
     input wire [31:0]                       link_address_i,
 
     // ����/�洢ָ��
     input wire [31:0]                       inst_i,
-    output reg [4:0]                        wd_o,
-    output reg                              wreg_o,
+    output reg                              we_o,
+    output reg [4:0]                        waddr_o,
     output reg [31:0]                       wdata_o,
 
     // �ô�������
@@ -80,8 +80,8 @@ module ex_state(
     end
 
     always @(*) begin
-        wd_o = wd_i;
-        wreg_o = wreg_i;
+        waddr_o = waddr_i;
+        we_o = we_i;
         stall_from_ex = `NoStop;
         case (alusel_i)
              `RES_LOGIC: 		wdata_o = logicout;

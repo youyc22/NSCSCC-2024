@@ -34,18 +34,18 @@ module yycpu(
 	wire[4:0] 	ex_aluop_i;
 	wire[2:0] 	ex_alusel_i;
 	wire[31:0] 	ex_reg1_i, ex_reg2_i;
-	wire 		ex_wreg_i, ex_wreg_o;
-	wire[4:0] 	ex_wd_i;
+	wire 		ex_we_i, ex_we_o;
+	wire[4:0] 	ex_waddr_i;
     wire[31:0] 	ex_link_address_i, ex_inst_i;
-	wire[4:0] 	ex_wd_o;
+	wire[4:0] 	ex_waddr_o;
 	wire[31:0] 	ex_wdata_o;
 	wire[4:0] 	ex_aluop_o;
 	wire[31:0] 	ex_mem_addr_o;
 	wire[31:0] 	ex_reg1_o, ex_reg2_o;
 
 	//????EX/MEM?????????????MEM??????????
-	wire 		mem_wreg_i;
-	wire[4:0] 	mem_wd_i;
+	wire 		mem_we_i;
+	wire[4:0] 	mem_waddr_i;
 	wire[31:0] 	mem_wdata_i;
 
 	//???
@@ -54,8 +54,8 @@ module yycpu(
 	wire[31:0] 	mem_reg1_i, mem_reg2_i;
 
 	//????????MEM?????????MEM/WB??????????
-	wire 		mem_wreg_o;
-	wire[4:0] 	mem_wd_o;
+	wire 		mem_we_o;
+	wire[4:0] 	mem_waddr_o;
 	wire[31:0] 	mem_wdata_o;
 	
 	//????MEM/WB??????????��??��???????	
@@ -123,13 +123,13 @@ module yycpu(
 		.reg1_data_i(reg1_data),
 		.reg2_data_i(reg2_data),
 
-	   	.ex_wreg_i(ex_wreg_o),
+	   	.ex_we_i(ex_we_o),
 		.ex_wdata_i(ex_wdata_o),
-		.ex_wd_i(ex_wd_o),
+		.ex_waddr_i(ex_waddr_o),
 
-		.mem_wreg_i(mem_wreg_o),
+		.mem_we_i(mem_we_o),
 		.mem_wdata_i(mem_wdata_o),
-		.mem_wd_i(mem_wd_o),
+		.mem_waddr_i(mem_waddr_o),
 
 		.reg1_read_o(reg1_read),
 		.reg2_read_o(reg2_read), 	  
@@ -141,7 +141,7 @@ module yycpu(
 		.reg1_o(id_reg1),
 		.reg2_o(id_reg2),
 		.waddr_o(id_waddr),
-		.wreg_o(id_we),
+		.we_o(id_we),
 		.inst_o(id_inst_o),
 	
 		.branch_flag_o(id_branch_flag_o),
@@ -176,8 +176,8 @@ module yycpu(
 		.id_alusel_i(id_alusel),
 		.id_reg1_i(id_reg1),
 		.id_reg2_i(id_reg2),
-		.id_wd_i(id_waddr),
-		.id_wreg_i(id_we),
+		.id_waddr_i(id_waddr),
+		.id_we_i(id_we),
 		.id_inst_i(id_inst_o),
 		.id_link_address_i(id_link_address_o),
 
@@ -185,8 +185,8 @@ module yycpu(
 		.ex_alusel_o(ex_alusel_i),
 		.ex_reg1_o(ex_reg1_i),
 		.ex_reg2_o(ex_reg2_i),
-		.ex_wd_o(ex_wd_i),
-		.ex_wreg_o(ex_wreg_i),
+		.ex_waddr_o(ex_waddr_i),
+		.ex_we_o(ex_we_i),
 		.ex_inst_o(ex_inst_i),
 		.ex_link_address_o(ex_link_address_i)
 	);		
@@ -200,13 +200,13 @@ module yycpu(
 		.alusel_i(ex_alusel_i),
 		.reg1_i(ex_reg1_i),
 		.reg2_i(ex_reg2_i),
-		.wd_i(ex_wd_i),
-		.wreg_i(ex_wreg_i),
+		.waddr_i(ex_waddr_i),
+		.we_i(ex_we_i),
 	  	.inst_i(ex_inst_i),
 		.link_address_i(ex_link_address_i),
 
-		.wd_o(ex_wd_o),
-		.wreg_o(ex_wreg_o),
+		.waddr_o(ex_waddr_o),
+		.we_o(ex_we_o),
 		.wdata_o(ex_wdata_o),
 		.aluop_o(ex_aluop_o),
 		.mem_addr_o(ex_mem_addr_o),
@@ -218,15 +218,15 @@ module yycpu(
 		.rst(rst),
 	  	.stall(stall),
 
-		.ex_wd_i(ex_wd_o),
-		.ex_wreg_i(ex_wreg_o),
+		.ex_waddr_i(ex_waddr_o),
+		.ex_we_i(ex_we_o),
 		.ex_wdata_i(ex_wdata_o),
 	   	.ex_aluop_i(ex_aluop_o),
 		.ex_mem_addr_i(ex_mem_addr_o),
 		.ex_reg2_i(ex_reg2_o),
 
-		.mem_wd_o(mem_wd_i),
-		.mem_wreg_o(mem_wreg_i),
+		.mem_waddr_o(mem_waddr_i),
+		.mem_we_o(mem_we_i),
 		.mem_wdata_o(mem_wdata_i),
 		.mem_aluop_o(mem_aluop_i),
 		.mem_mem_addr_o(mem_mem_addr_i),
@@ -237,16 +237,16 @@ module yycpu(
 	mem_state u_mem_state(
 		.rst(rst),
 
-		.wd_i(mem_wd_i),
-		.wreg_i(mem_wreg_i),
+		.waddr_i(mem_waddr_i),
+		.we_i(mem_we_i),
 		.wdata_i(mem_wdata_i),
 	    .aluop_i(mem_aluop_i),
 		.mem_addr_i(mem_mem_addr_i),
 		.reg2_i(mem_reg2_i),
 		.mem_data_i(ram_data_mem_o),
 
-		.wd_o(mem_wd_o),
-		.wreg_o(mem_wreg_o),
+		.waddr_o(mem_waddr_o),
+		.we_o(mem_we_o),
 		.wdata_o(mem_wdata_o),
         .mem_addr_o(ram_addr_o),
 		.mem_data_o(ram_data_o),
@@ -279,12 +279,12 @@ module yycpu(
 		.rst(rst),
         .stall(stall),
 
-		.mem_wd_i(mem_wd_o),
-		.mem_wreg_i(mem_wreg_o),
+		.mem_waddr_i(mem_waddr_o),
+		.mem_we_i(mem_we_o),
 		.mem_wdata_i(mem_wdata_o),
 
-		.wb_wd_o(wb_waddr),
-		.wb_wreg_o(wb_we),
+		.wb_waddr_o(wb_waddr),
+		.wb_we_o(wb_we),
 		.wb_wdata_o(wb_wdata)											       	
 	);
 	
