@@ -98,7 +98,7 @@ module yycpu(
 		.stall_from_icache(stall_from_icache),
 		.stall_from_bus(stall_from_bus),
 
-		.rom_addr_i(rom_addr_o),        //??????????
+		.pc_i(rom_addr_o),        //??????????
 		.rom_ce_n_i(rom_ce_n_o),          //????????????????
 		.inst_i(rom_data_i),  
 		.inst_o(rom_data_icache)            //??????????
@@ -120,8 +120,8 @@ module yycpu(
 		.id_pc_i(id_pc),
 		.id_inst_i(id_inst),
         .ex_aluop_i(ex_aluop_o),
-		.reg1_data_i(reg1_data),
-		.reg2_data_i(reg2_data),
+		.r1_data_i(reg1_data),
+		.r2_data_i(reg2_data),
 
 	   	.ex_we_i(ex_we_o),
 		.ex_wdata_i(ex_wdata_o),
@@ -131,15 +131,15 @@ module yycpu(
 		.mem_wdata_i(mem_wdata_o),
 		.mem_waddr_i(mem_waddr_o),
 
-		.reg1_read_o(reg1_read),
-		.reg2_read_o(reg2_read), 	  
-		.reg1_addr_o(reg1_addr),
-		.reg2_addr_o(reg2_addr), 
+		.re1_o(reg1_read),
+		.re2_o(reg2_read), 	  
+		.r1_addr_o(reg1_addr),
+		.r2_addr_o(reg2_addr), 
 	
 		.aluop_o(id_aluop),
 		.alusel_o(id_alusel),
-		.reg1_o(id_reg1),
-		.reg2_o(id_reg2),
+		.r1_data_o(id_reg1),
+		.r2_data_o(id_reg2),
 		.waddr_o(id_waddr),
 		.we_o(id_we),
 		.inst_o(id_inst_o),

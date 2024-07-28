@@ -4,8 +4,8 @@ module icache_direct(
     input wire                                  rst,
 
     // CPU 接口
-    input    wire[31:0]  rom_addr_i,        // CPU 请求的指令地址
-    input    wire        rom_ce_n_i,        // 指令存储器片选信号，低电平有效
+    (* DONT_TOUCH = "1" *) input    wire[31:0]  pc_i,              // CPU 请求的指令地址
+    (* DONT_TOUCH = "1" *) input    wire        rom_ce_n_i,        // 指令存储器片选信号，低电平有效
     output   reg [31:0]                         inst_o,            // 输出的指令
     output   reg                                stall_from_icache, // 缓存暂停信号
     
@@ -34,8 +34,8 @@ module icache_direct(
     integer i;  // 用于初始化的循环变量
 
     // 地址解析和命中判断
-    wire [tag_num-1:0]      ram_tag_i = rom_addr_i[21:7];           // 从地址中提取标记
-    wire [cache_index-1:0]  ram_cache_i = rom_addr_i[6:2];  // 从地址中提取索引
+    wire [tag_num-1:0]      ram_tag_i = pc_i[21:7];           // 从地址中提取标记
+    wire [cache_index-1:0]  ram_cache_i = pc_i[6:2];  // 从地址中提取索引
     wire hit = (state==IDLE) && cache_valid[ram_cache_i] && (cache_tag[ram_cache_i]==ram_tag_i);  // 命中条件：空闲状态 + 有效 + 标记匹配
     
     // 状态机时序逻辑
