@@ -40,8 +40,8 @@ module id_state(
 	
 	output reg                    				branch_flag_o,
 	output reg[31:0]           					branch_target_o,       
-	output reg[31:0]           					link_addr_o,
-	//ls
+	output reg[31:0]           					link_o,
+
 	output wire[31:0]          					inst_o,
 	output wire        							stall_from_id    
 );
@@ -57,11 +57,9 @@ module id_state(
 	wire[31:0] 	pc_plus_4 = id_pc_i + 4;
 	wire[31:0] 	branch_addr = pc_plus_4 + {{14{id_inst_i[15]}}, id_inst_i[15:0], 2'b00 };
 
-    //????load???
     reg 		stall_for_reg1, stall_for_reg2;
 	reg[31:0] 	imm_o;
 	
-    //ls
     assign inst_o = id_inst_i;
     assign stall_from_id = stall_for_reg1 | stall_for_reg2;
     assign is_inst_load = (ex_aluop_i ==  `LW_OP) | (ex_aluop_i ==  `LB_OP);
@@ -77,7 +75,7 @@ module id_state(
 			r1_addr_o <= 5'b00000;
 			r2_addr_o <= 5'b00000;
 			imm_o <= `ZeroWord;		
-			link_addr_o <= `ZeroWord;
+			link_o <= `ZeroWord;
 			branch_target_o <= `ZeroWord;
 			branch_flag_o <= `NotBranch;
 	  	end else begin
@@ -90,7 +88,7 @@ module id_state(
 			r1_addr_o <= rs;
 			r2_addr_o <= rt;		
 			imm_o <= `ZeroWord;			
-			link_addr_o <= `ZeroWord;
+			link_o <= `ZeroWord;
 			branch_target_o <= `ZeroWord;
 			branch_flag_o <= `NotBranch;			
 		case (op)
@@ -168,7 +166,7 @@ module id_state(
 				alusel_o <=  `RES_JUMP_BRANCH;   
 				re1_o <= 1'b1;	
 				re2_o <= 1'b0;
-				link_addr_o <= `ZeroWord;	  						
+				link_o <= `ZeroWord;	  						
 				branch_target_o <= r1_data_o;
 				branch_flag_o <= `Branch;			           
 				end
@@ -178,7 +176,7 @@ module id_state(
 				alusel_o <=  `RES_JUMP_BRANCH;   
 				re1_o <= 1'b1;	
 				re2_o <= 1'b0;	  						
-				link_addr_o <= pc_plus_8;
+				link_o <= pc_plus_8;
 				branch_target_o <= r1_data_o;
 				branch_flag_o <= `Branch;			           
 				end
@@ -237,7 +235,7 @@ module id_state(
 			alusel_o <=  `RES_JUMP_BRANCH; 
 			re1_o <= 1'b0;	
 			re2_o <= 1'b0;
-			link_addr_o <= `ZeroWord;
+			link_o <= `ZeroWord;
 			branch_target_o <= {pc_plus_4[31:28], id_inst_i[25:0], 2'b00};
 			branch_flag_o <= `Branch;  		
 			end
@@ -248,7 +246,7 @@ module id_state(
 			re1_o <= 1'b0;	
 			re2_o <= 1'b0;
 			waddr_o <= 5'b11111;	
-			link_addr_o <= pc_plus_8 ;
+			link_o <= pc_plus_8 ;
 			branch_target_o <= {pc_plus_4[31:28], id_inst_i[25:0], 2'b00};
 			branch_flag_o <= `Branch;	  		
 			end

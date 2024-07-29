@@ -1,3 +1,5 @@
+//三周期访存
+
 module mem_controller_3(
     input    wire        clk,
     input    wire        rst,
@@ -80,7 +82,6 @@ module mem_controller_3(
                         stall_from_mem = 1'b0;
                     end else begin
                         next_state = BUSY2;
-                        //stall_from_mem = 1'b1;
                     end
                 end
                 default: next_state = IDLE;

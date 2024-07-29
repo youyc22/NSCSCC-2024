@@ -15,18 +15,18 @@ module icache_direct(
 
 );
     // 缓存参数定义
-    parameter cache_hang = 32;        // 缓存行数
-    parameter tag_num = 15;              // 标记位宽
-    parameter cache_index = 5;       // 索引位宽
+    parameter cache_lines = 32;        // 缓存行数            
+    parameter cache_index = $clog2(cache_lines);      // 标记位宽
+    parameter tag_num = 20-cache_index;   // 索引位宽
     
     // 状态机状态定义
     parameter IDLE = 0;              // 空闲状态
     parameter BUSY = 1;              // 读取 SRAM 状态
 
     // 缓存存储单元
-    reg[31:0]            cache_data[0:cache_hang-1];   // 缓存数据存储
-    reg[tag_num-1:0]     cache_tag[0:cache_hang-1];   // 缓存标记存储
-    reg[cache_hang-1:0]  cache_valid;                // 缓存有效位
+    reg[31:0]            cache_data[0:cache_lines-1];   // 缓存数据存储
+    reg[tag_num-1:0]     cache_tag[0:cache_lines-1];   // 缓存标记存储
+    reg[cache_lines-1:0]  cache_valid;                // 缓存有效位
 
     // 状态机状态寄存器
     reg state, next_state, finish;
@@ -34,8 +34,8 @@ module icache_direct(
     integer i;  // 用于初始化的循环变量
 
     // 地址解析和命中判断
-    wire [tag_num-1:0]      ram_tag_i = pc_i[21:7];           // 从地址中提取标记
-    wire [cache_index-1:0]  ram_cache_i = pc_i[6:2];  // 从地址中提取索引
+    wire [tag_num-1:0]      ram_tag_i = pc_i[21:22-tag_num];             // 从地址中提取标记
+    wire [cache_index-1:0]  ram_cache_i = pc_i[6:7-cache_index];            // 从地址中提取索引
     wire hit = (state==IDLE) && cache_valid[ram_cache_i] && (cache_tag[ram_cache_i]==ram_tag_i);  // 命中条件：空闲状态 + 有效 + 标记匹配
     
     // 状态机时序逻辑
@@ -77,11 +77,11 @@ module icache_direct(
     // 缓存更新逻辑
     always@(posedge clk or posedge rst) begin
         if(rst) begin      // 复位时初始化缓存
-            for(i=0; i < 32; i=i+1) begin
+            for(i=0; i < cache_lines; i=i+1) begin
                 cache_data[i] <= 32'b0;
-                cache_tag[i] <= 15'b0;
+                cache_tag[i] <= {tag_num{1'b0}};
             end  
-            cache_valid <= 32'h00000000;
+            cache_valid <= {cache_lines{1'b0}};
         end else begin
             case(state)
             BUSY: begin       

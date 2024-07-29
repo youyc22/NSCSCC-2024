@@ -12,7 +12,7 @@ module uart_controller (
     input  wire         rxd
 );
 
-    parameter clk_freq = 118*1000000;
+    parameter clk_freq = 116*1000000;
     parameter baud = 9600;
     
     reg [7:0] TxD_data;
@@ -54,7 +54,7 @@ module uart_controller (
         end else if(is_SerialData) begin                  
             if(~mem_oe_n) begin
                 serial_o = {24'd0, RxD_data};
-            end else if(~TxD_busy && ~mem_we_n)begin
+            end else if(~TxD_busy && ~mem_we_n) begin
                 TxD_data = mem_data_i[7:0];
                 TxD_start = 1'b1;
             end

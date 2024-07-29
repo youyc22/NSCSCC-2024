@@ -24,18 +24,18 @@ module ex_mem_reg(
 
     always @ (posedge clk) begin
         if(rst == `RstEnable || (stall[3] == `Stop && stall[4] == `NoStop)) begin
-            mem_waddr_o       <= 5'b00000;
-            mem_we_o     <= `WriteDisable;
+            mem_waddr_o    <= 5'b00000;
+            mem_we_o       <= `WriteDisable;
             mem_wdata_o    <= `ZeroWord;
             mem_aluop_o    <= `NOP_OP;
-            mem_addr_o <= `ZeroWord;
+            mem_addr_o     <= `ZeroWord;
             mem_reg2_o     <= `ZeroWord;
         end else if(stall[3] == `NoStop) begin
-            mem_waddr_o       <= ex_waddr_i;
-            mem_we_o     <= ex_we_i;
+            mem_waddr_o    <= ex_waddr_i;
+            mem_we_o       <= ex_we_i;
             mem_wdata_o    <= ex_wdata_i;
             mem_aluop_o    <= ex_aluop_i;
-            mem_addr_o <= ex_mem_addr_i;
+            mem_addr_o     <= ex_mem_addr_i;
             mem_reg2_o     <= ex_reg2_i;
         end
     end

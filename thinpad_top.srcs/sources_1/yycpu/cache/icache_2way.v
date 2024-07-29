@@ -1,17 +1,17 @@
 //两路组相联，最近最少替换策略
 
 module icache_2way (
-
-    input wire                  clk,
-    input wire                  rst,
-
-    (* DONT_TOUCH = "1" *) input wire[31:0]  rom_addr_i,
-    (* DONT_TOUCH = "1" *) input wire        rom_ce_n_i,
-    output reg [31:0]           inst_o,
-    output reg                  stall_from_icache,
-
-    input wire                  stall_from_bus,
-    input wire [31:0]           inst_i
+    input wire                                  clk,
+    input wire                                  rst,
+    // CPU 接口
+    (* DONT_TOUCH = "1" *) input    wire[31:0]  pc_i,              // CPU 请求的指令地址
+    (* DONT_TOUCH = "1" *) input    wire        rom_ce_n_i,        // 指令存储器片选信号，低电平有效
+    output   reg [31:0]                         inst_o,            // 输出的指令
+    output   reg                                stall_from_icache, // 缓存暂停信号
+    
+    // SRAM 接口
+    input wire                                  stall_from_bus,    // 总线暂停信号
+    input wire [31:0]                           inst_i             // 从 SRAM 读取的指令
 );
 
 parameter SET_NUM = 16;     //

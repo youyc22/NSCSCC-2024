@@ -1,15 +1,14 @@
 `include "defines.v"
 
 module yycpu(
-	input  wire						clk,		//???????
-	input  wire						rst,		//??��???
+	input  wire						clk,		
+	input  wire						rst,		
 
-	input  wire[31:0]            	rom_data_i,	//???????
+	input  wire[31:0]            	rom_data_i,	
 	input  wire                     stall_from_bus,
-	output wire[31:0]          		rom_addr_o,	//??????
+	output wire[31:0]          		rom_addr_o,	
 	output wire                    	rom_ce_n_o,
 	
-	//????????
 	input  wire[31:0]            	ram_data_i,
 	output wire[31:0]          		ram_addr_o,
 	output wire[31:0]           	ram_data_o,
@@ -136,7 +135,7 @@ module yycpu(
 	
 		.branch_flag_o(id_branch_flag_o),
 		.branch_target_o(branch_address),       
-		.link_addr_o(id_link_address_o),
+		.link_o(id_link_address_o),
 
 		.stall_from_id(stall_from_id)	
 	);
@@ -169,7 +168,7 @@ module yycpu(
 		.id_waddr_i(id_waddr),
 		.id_we_i(id_we),
 		.id_inst_i(id_inst_o),
-		.id_link_address_i(id_link_address_o),
+		.id_link_i(id_link_address_o),
 
 		.ex_aluop_o(ex_aluop_i),
 		.ex_alusel_o(ex_alusel_i),
@@ -178,7 +177,7 @@ module yycpu(
 		.ex_waddr_o(ex_waddr_i),
 		.ex_we_o(ex_we_i),
 		.ex_inst_o(ex_inst_i),
-		.ex_link_address_o(ex_link_address_i)
+		.ex_link_o(ex_link_address_i)
 	);		
 	
 	ex_state u_ex_state(
@@ -245,7 +244,7 @@ module yycpu(
 		.mem_oe_n_o(ram_oe_n)	
 	);
 	
-	//此模块是为了方便直接替换为dcache
+	//此模块是为了方便后续替换dcache，以及替换为多周期访存
 	mem_controller u_mem(
 		.clk(clk),
 		.rst(rst),

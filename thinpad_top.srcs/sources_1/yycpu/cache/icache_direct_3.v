@@ -2,9 +2,8 @@ module icache_direct_3(
     // 时钟和复位信号
     input wire                                  clk,
     input wire                                  rst,
-
     // CPU 接口
-    (* DONT_TOUCH = "1" *) input    wire[31:0]  rom_addr_i,        // CPU 请求的指令地址
+    (* DONT_TOUCH = "1" *) input    wire[31:0]  pc_i,              // CPU 请求的指令地址
     (* DONT_TOUCH = "1" *) input    wire        rom_ce_n_i,        // 指令存储器片选信号，低电平有效
     output   reg [31:0]                         inst_o,            // 输出的指令
     output   reg                                stall_from_icache, // 缓存暂停信号

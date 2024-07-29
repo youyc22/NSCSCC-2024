@@ -64,6 +64,7 @@ module ex_state(
 			(aluop_i ==  `SLT_OP) ? ($signed(reg1_i) < $signed(reg2_i)) : `ZeroWord;
 	end
 
+    //有符号乘法
     assign mul_1 = (aluop_i == `MUL_OP) ? reg1_i : 32'b0;
     assign mul_2 = (aluop_i == `MUL_OP) ? reg2_i : 32'b0;
 
