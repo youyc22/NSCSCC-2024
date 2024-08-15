@@ -9,7 +9,7 @@ lui $s0, 0x8040  # A
 lui $s1, 0x8050  # B
 lui $s2, 0x8060  # C
 # 数组长度为0x40000
-ori $s3, $zero, 0x40000
+lui $s3, 0x4
 ori $s4, $zero, 0x0
 
 loop:
