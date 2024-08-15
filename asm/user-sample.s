@@ -5,38 +5,22 @@
 
 __start:
 .text
-lui $s0, 0x8040  # A
-lui $s1, 0x8050  # B
-lui $s2, 0x8060  # C
-# 数组长度为0x40000
-lui $s3, 0x4
-ori $s4, $zero, 0x0
+    ori $t0, $zero, 0x1   # t0 = 1
+    ori $t1, $zero, 0x1   # t1 = 1
+    xor $v0, $v0,   $v0   # v0 = 0
+    ori $v1, $zero, 8     # v1 = 8
+    lui $a0, 0x8040       # a0 = 0x80400000
 
 loop:
-beq $s4, $s3, end
-ori $zero, $zero, 0
-ori $t3, $zero, 0x0
-addiu $s4, $s4, 1
-lw $t0, 0($s0)  # A[i]
-lw $t1, 0($s1)  # B[i]
+    addu  $t2, $t0, $t1   # t2 = t0+t1
+    ori   $t0, $t1, 0x0   # t0 = t1
+    ori   $t1, $t2, 0x0   # t1 = t2
+    sw    $t1, 0($a0)
+    addiu $a0, $a0, 4     # a0 += 4
+    addiu $v0, $v0, 1     # v0 += 1
 
-loop_mod:
-addu $t3, $t3, $t1
-subu $t2, $t0, $t3
-bltz $t2, loop_mod_end
-ori $zero, $zero, 0
-j loop_mod
-ori $zero, $zero, 0
+    bne   $v0, $v1, loop
+    ori   $zero, $zero, 0 # nop
 
-loop_mod_end:
-addu $t2, $t2, $t1
-sw $t2, 0($s2)  # C[i]
-addiu $s0, $s0, 4
-addiu $s1, $s1, 4
-addiu $s2, $s2, 4
-j loop
-ori $zero, $zero, 0
-
-end:
-jr $ra
-ori $zero, $zero, 0
+    jr    $ra
+    ori   $zero, $zero, 0 # nop
