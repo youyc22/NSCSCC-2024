@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="848540fs"></ZoomStartTime>
-      <ZoomEndTime time="1030293fs"></ZoomEndTime>
-      <Cursor1Time time="1000000fs"></Cursor1Time>
+      <ZoomStartTime time="2078816470fs"></ZoomStartTime>
+      <ZoomEndTime time="2079412498fs"></ZoomEndTime>
+      <Cursor1Time time="2078890000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="237"></NameColumnWidth>
-      <ValueColumnWidth column_width="129"></ValueColumnWidth>
+      <ValueColumnWidth column_width="192"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="104" />
+   <WVObjectSize size="105" />
    <wvobject fp_name="/tb/clk_50M" type="logic">
       <obj_property name="ElementShortName">clk_50M</obj_property>
       <obj_property name="ObjectShortName">clk_50M</obj_property>
@@ -157,8 +157,8 @@
       <obj_property name="ObjectShortName">flash_byte_n</obj_property>
    </wvobject>
    <wvobject fp_name="/tb/BASE_RAM_INIT_FILE" type="array">
-      <obj_property name="ElementShortName">BASE_RAM_INIT_FILE[399:0]</obj_property>
-      <obj_property name="ObjectShortName">BASE_RAM_INIT_FILE[399:0]</obj_property>
+      <obj_property name="ElementShortName">BASE_RAM_INIT_FILE[463:0]</obj_property>
+      <obj_property name="ObjectShortName">BASE_RAM_INIT_FILE[463:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb/EXT_RAM_INIT_FILE" type="array">
       <obj_property name="ElementShortName">EXT_RAM_INIT_FILE[455:0]</obj_property>
@@ -435,5 +435,9 @@
    <wvobject fp_name="/tb/base1/DataIO" type="array">
       <obj_property name="ElementShortName">DataIO[15:0]</obj_property>
       <obj_property name="ObjectShortName">DataIO[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb/dut/u_yycpu/u_regfile/regs[17]" type="array">
+      <obj_property name="ElementShortName">[17][31:0]</obj_property>
+      <obj_property name="ObjectShortName">[17][31:0]</obj_property>
    </wvobject>
 </wave_config>
