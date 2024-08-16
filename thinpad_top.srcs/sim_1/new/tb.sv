@@ -40,8 +40,8 @@ wire flash_we_n;         //Flash鍐欎娇鑳戒俊鍙凤紝浣庢湁鏁?
 wire flash_byte_n;       //Flash 8bit妯″紡閫夋嫨锛屼綆鏈夋晥銆傚湪浣跨敤flash鐨?16浣嶆ā寮忔椂璇疯涓?1
 
 //Windows闇?瑕佹敞鎰忚矾寰勫垎闅旂鐨勮浆涔夛紝渚嬪"D:\\foo\\bar.bin"
-//parameter BASE_RAM_INIT_FILE = "C:\\Users\\DELL\\Desktop\\NSCSCC\\package\\windows\\test_mul.bin"; //BaseRAM初始化文件，请修改为实际的绝对路??
-parameter BASE_RAM_INIT_FILE = "C:\\Users\\DELL\\Desktop\\NSCSCC\\test_problem\\supervisor_mips\\kernel\\kernel.bin"; //BaseRAM初始化文件，请修改为实际的绝对路??
+parameter BASE_RAM_INIT_FILE = "C:\\Users\\DELL\\Desktop\\NSCSCC\\package\\windows\\test_div.bin"; //BaseRAM初始化文件，请修改为实际的绝对路??
+//parameter BASE_RAM_INIT_FILE = "C:\\Users\\DELL\\Desktop\\NSCSCC\\test_problem\\supervisor_mips\\kernel\\kernel.bin"; //BaseRAM初始化文件，请修改为实际的绝对路??
 parameter EXT_RAM_INIT_FILE = "C:\\Users\\DELL\\Desktop\\NSCSCC\\test_problem\\lab2\\output.bin";    //ExtRAM初始化文件，请修改为实际的绝对路??
 parameter FLASH_INIT_FILE = "/tmp/kernel.elf";    //Flash鍒濆鍖栨枃浠讹紝璇蜂慨鏀逛负瀹為檯鐨勭粷瀵硅矾寰?
 

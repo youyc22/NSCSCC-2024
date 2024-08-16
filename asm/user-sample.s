@@ -1,42 +1,29 @@
 .set noreorder
 .set noat
 .globl __start
-.section text
+.section .text
 
 __start:
-.text
-lui $s0, 0x8040  # A
-lui $s1, 0x8050  # B
-lui $s2, 0x8060  # C
-# 数组长度为0x40000
-lui $s3, 0x4
-ori $s4, $zero, 0x0
+    lui $s0, 0x3
+    ori $s0, $zero, 0x1112  # 假设我们要计算这个数的二进制1的个数
+    ori $s1, $zero, 0       # 用于存储1的个数
+    ori $s2, $zero, 0x1     # 用于循环计数
+    ori $s3, $zero, 0x0     # 用于存储临时值
+    
+loop_1: 
+    beq $s2, $s0, end
+    nop
+    addu $s3, $s2, $zero
+    addi $s2, $s2, 1
 
-loop:
-beq $s4, $s3, end
-ori $zero, $zero, 0
-ori $t3, $zero, 0x0
-addiu $s4, $s4, 1
-lw $t0, 0($s0)  # A[i]
-lw $t1, 0($s1)  # B[i]
-
-loop_mod:
-addu $t3, $t3, $t1
-subu $t2, $t0, $t3
-bltz $t2, loop_mod_end
-ori $zero, $zero, 0
-j loop_mod
-ori $zero, $zero, 0
-
-loop_mod_end:
-addu $t2, $t2, $t1
-sw $t2, 0($s2)  # C[i]
-addiu $s0, $s0, 4
-addiu $s1, $s1, 4
-addiu $s2, $s2, 4
-j loop
-ori $zero, $zero, 0
-
+loop_2:
+    beq $s3, $zero, loop_1     # 如果数字变为0，结束循环
+    nop
+    addi $s1, $s1, 1        # 计数器加1
+    subu $t0, $s3, 1        # n-1
+    and $s3, $s3, $t0       # n = n & (n-1)
+    j loop_2
+    nop
 end:
-jr $ra
-ori $zero, $zero, 0
+    jr $ra
+    ori $zero, $zero, 0
