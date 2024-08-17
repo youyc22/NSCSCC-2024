@@ -5,14 +5,13 @@
 
 __start:
     lui $s0, 0x8040  # 数组A地址
-    # lui $s1, 0x30    # 数组A长度（字节）
     lui $s2, 0x8070  # 结果目标地址
     ori $t0, $zero, 0      # Initialize max value to 0
 
 loop:
     lw $t2, 0($s0)  # Load value from array A
     addiu $s0, $s0, 4   # Increment array pointer by 4 bytes
-    subu $t3, $t2, $t0  # Calculate difference between max and value
+    slt $t3, $t0, $t2  # Calculate difference between max and value
     bgtz $t3, update_max   # Branch if value is greater than max
     nop
     j check_end     # Jump to check_end

@@ -61,7 +61,7 @@ module ex_state(
     always @(*) begin
         arithmeticres = (rst == `RstEnable) ? `ZeroWord :
 			(aluop_i ==  `ADDU_OP || aluop_i == `SUBU_OP) ? result_sum :
-			(aluop_i ==  `SLT_OP) ? ($signed(reg1_i) < $signed(reg2_i)) : `ZeroWord;
+			(aluop_i ==  `SLT_OP) ? ($unsigned(reg1_i) < $unsigned(reg2_i)) : `ZeroWord;
 	end
 
     //有符号乘法
