@@ -25,7 +25,7 @@ check_end:
     nop
     j loop          # Jump to loop
     nop
-      # Store max value to result target address
+    # Store max value to result target address
 end:
     sw $t0, 0($s2)
     jr $ra
