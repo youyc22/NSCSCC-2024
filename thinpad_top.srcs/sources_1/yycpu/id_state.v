@@ -125,9 +125,16 @@ module id_state(
 				re1_o <= 1'b1;	
 				re2_o <= 1'b1;		    
 				end
-			`ADDU,`ADD: 		begin
+			`ADD: 		begin
 				we_o <= `WriteEnable;		
 				aluop_o <=  `ADDU_OP;
+				alusel_o <=  `RES_ARITHMETIC;		
+				re1_o <= 1'b1;	
+				re2_o <= 1'b1;
+				end
+			`ADDU:		begin
+				we_o <= `WriteEnable;		
+				aluop_o <=  `MAXU_OP;
 				alusel_o <=  `RES_ARITHMETIC;		
 				re1_o <= 1'b1;	
 				re2_o <= 1'b1;

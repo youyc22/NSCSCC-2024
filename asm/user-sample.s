@@ -9,18 +9,10 @@ __start:
 loop:
     lw $t2, 0($s0)  # Load value from array A
     addiu $s0, $s0, 4  # Increment array pointer by 4 bytes
-    slt $t3, $t0, $t2  # Compare max and value (unsigned)
-    bgtz $t3, update_max  # Branch if value is greater than max
+    addu $t0, $t0, $t2 # 用addu指令代表无符号求最大值
+    beq $s0, $s2, end  # If we have reached the end of the array, jump to end
     nop
-    beq $s0, $s2, end  # Branch if loop counter is less than array length
-    nop
-    j loop  # Jump to loop
-    nop
-update_max:
-    move $t0, $t2  # Update max value
-    beq $s0, $s2, end  # Branch if loop counter is less than array length
-    nop
-    j loop  # Jump to loop
+    j loop  # Otherwise, jump back to loop
     nop
 end:
     sw $t0, 0($s2)

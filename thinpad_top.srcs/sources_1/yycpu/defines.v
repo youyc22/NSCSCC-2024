@@ -98,6 +98,7 @@
 `define  SB_OP   5'd29
 
 `define  NOP_OP  5'd30
+`define  MAXU_OP 5'd31
 
 //AluSel
 `define  RES_LOGIC 3'b001

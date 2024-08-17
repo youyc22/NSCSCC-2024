@@ -33,6 +33,7 @@ module ex_state(
     wire [31:0] result_sum, result_mul;
     wire [31:0] mul_1, mul_2;
     wire [31:0] reg2_i_sign;
+    wire [31:0] maxu_sum;
 
     // �ô���������ֵ
     assign aluop_o = aluop_i;
@@ -40,6 +41,7 @@ module ex_state(
     assign mem_addr_o = reg1_i + {{16{inst_i[15]}}, inst_i[15:0]};
     assign reg2_i_sign = (aluop_i == `SUBU_OP) ? (~reg2_i) + 1 : reg2_i;
     assign result_sum = reg1_i + reg2_i_sign;
+    assign maxu_sum = ($unsigned(reg1_i) > $unsigned(reg2_i)) ? reg1_i : reg2_i;
 
     // �߼�����
     always @(*) begin
@@ -60,6 +62,7 @@ module ex_state(
     // ��������
     always @(*) begin
         arithmeticres = (rst == `RstEnable) ? `ZeroWord :
+            (aluop_i == `MAXU_OP) ? maxu_sum :
 			(aluop_i ==  `ADDU_OP || aluop_i == `SUBU_OP) ? result_sum :
 			(aluop_i ==  `SLT_OP) ? ($unsigned(reg1_i) < $unsigned(reg2_i)) : `ZeroWord;
 	end
