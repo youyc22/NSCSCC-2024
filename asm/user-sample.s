@@ -7,7 +7,7 @@ __start:
     lui $s0, 0x8040  # 数组A地址
     # lui $s1, 0x30    # 数组A长度（字节）
     lui $s2, 0x8070  # 结果目标地址
-    ori $t0, 0, 0      # Initialize max value to 0
+    ori $t0, $zero, 0      # Initialize max value to 0
 
 loop:
     lw $t2, 0($s0)  # Load value from array A
