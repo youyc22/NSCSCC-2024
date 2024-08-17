@@ -3,8 +3,8 @@
 .globl __start
 .section .text
 __start:
-    lui $s0, 0x8040  # 数组A地址
-    lui $s1, 0x8060
+    lui $s0, 0x8050  # 数组A地址
+    lui $s1, 0x8070
     lui $s2, 0x806f  # 结果目标地址
     ori $s2, $s2, 0xfffc
     ori $t0, $zero, 0  
